@@ -123,7 +123,7 @@ export default function Header() {
 
             <div style={{ position: 'relative', zIndex: 2 }}>
               <div style={{ 
-                fontSize: '22px', 
+                fontSize: '19px', 
                 fontWeight: '900', 
                 background: 'linear-gradient(135deg, #fff, #e0e0e0)',
                 WebkitBackgroundClip: 'text',
@@ -132,7 +132,7 @@ export default function Header() {
                 transition: 'all 0.4s ease'
               }}
               className="logo-text">
-                INSAF
+                INSAF BUILDING
               </div>
               <div style={{ 
                 fontSize: '10px', 
@@ -141,7 +141,7 @@ export default function Header() {
                 marginTop: '-2px',
                 transition: 'all 0.4s ease'
               }}>
-                ARCHITECTS
+                Design & Consultant Ltd
               </div>
               <div className="logo-underline" style={{
                 height: '2px',
