@@ -24,7 +24,7 @@ export default function Services() {
       tagline: 'Built to Last',
       description: 'In-house structural engineers ensuring your building stands the test of time. BNBC compliant calculations and earthquake-resistant design.',
       features: ['Load Calculations', 'Foundation Design', 'Structural Analysis', 'BNBC Compliance', 'Site Supervision'],
-      price: 'From ৳50,000',
+      price: 'Custom Quote',
       gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
       color: '#f093fb'
     },
@@ -35,7 +35,7 @@ export default function Services() {
       tagline: '100% Success Rate',
       description: '530+ successful approvals. We handle the entire process from documentation to final approval. Average approval time: 4-6 months.',
       features: ['Document Preparation', 'DAP Analysis', 'Application Submission', 'Follow-up', 'Approval Collection'],
-      price: 'From ৳75,000',
+      price: 'Custom Quote',
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
       color: '#4facfe'
     },
@@ -46,7 +46,7 @@ export default function Services() {
       tagline: 'Luxury Within',
       description: 'Transform your interiors into masterpieces. Our designers create spaces that reflect your personality while maximizing functionality.',
       features: ['Space Planning', '3D Renders', 'Furniture Design', 'Material Selection', 'Execution Support'],
-      price: 'From ৳40,000',
+      price: 'Custom Quote',
       gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
       color: '#43e97b'
     },
@@ -57,7 +57,7 @@ export default function Services() {
       tagline: 'See Before You Build',
       description: 'Photorealistic 3D renders and immersive VR walkthroughs. Experience your space before construction begins.',
       features: ['Exterior Renders', 'Interior Renders', 'VR Walkthrough', '360° Views', 'Animation Videos'],
-      price: 'From ৳30,000',
+      price: 'Custom Quote',
       gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
       color: '#fa709a'
     },
@@ -68,7 +68,7 @@ export default function Services() {
       tagline: 'Quality Assured',
       description: 'End-to-end project supervision ensuring your vision is executed perfectly. Regular site visits and progress reporting.',
       features: ['Site Supervision', 'Quality Control', 'Contractor Coordination', 'Progress Tracking', 'Problem Resolution'],
-      price: '5% of Project Value',
+      price: 'Custom Quote',
       gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
       color: '#ffecd2'
     }

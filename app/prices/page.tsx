@@ -166,28 +166,28 @@ export default function ServicePricesPage() {
     {
       icon: '📋',
       title: 'RAJUK Plan Approval',
-      price: '৳60,000 - ৳1,50,000',
+      price: 'Custom Quote',
       description: 'Complete documentation & submission',
       color: '#FFD700'
     },
     {
       icon: '🏛️',
       title: 'Municipality Approval',
-      price: '৳40,000 - ৳80,000',
+      price: 'Custom Quote',
       description: 'Local authority compliance',
       color: '#667eea'
     },
     {
       icon: '📏',
       title: 'Digital Land Survey',
-      price: '৳8,000 - ৳15,000',
+      price: 'Custom Quote',
       description: 'Accurate site measurement',
       color: '#4facfe'
     },
     {
       icon: '🧪',
       title: 'Soil Testing',
-      price: '৳15,000 - ৳25,000',
+      price: 'Custom Quote',
       description: 'Foundation analysis',
       color: '#43e97b'
     },
