@@ -15,6 +15,8 @@ export default function Contact() {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  // ✅ NEW: Added submitStatus for Formspree
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
   useEffect(() => {
     setIsLoaded(true)
@@ -27,22 +29,50 @@ export default function Contact() {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // ✅ UPDATED: handleSubmit with Formspree integration
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate submission
-    setTimeout(() => {
-      setIsSubmitting(false)
-      alert('Thank you! We will contact you within 24 hours.')
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        projectType: '',
-        budget: '',
-        message: ''
+    setSubmitStatus('idle')
+
+    try {
+      const response = await fetch('https://formspree.io/f/xreanlnr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          projectType: formData.projectType,
+          budget: formData.budget,
+          message: formData.message,
+          _subject: `New Project Inquiry from ${formData.name}`,
+        })
       })
-    }, 2000)
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          projectType: '',
+          budget: '',
+          message: ''
+        })
+        setTimeout(() => setSubmitStatus('idle'), 5000)
+      } else {
+        setSubmitStatus('error')
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const inputStyle = {
@@ -428,6 +458,48 @@ export default function Contact() {
                   {!isSubmitting && <span style={{ fontSize: '20px', position: 'relative', zIndex: 2 }}>→</span>}
                 </button>
 
+                {/* ✅ NEW: Success Message */}
+                {submitStatus === 'success' && (
+                  <div style={{
+                    marginTop: '20px',
+                    padding: '20px',
+                    backgroundColor: 'rgba(0,255,0,0.1)',
+                    border: '2px solid rgba(0,255,0,0.3)',
+                    borderRadius: '15px',
+                    textAlign: 'center',
+                    animation: 'fadeInUp 0.5s ease-out'
+                  }}>
+                    <div style={{ fontSize: '40px', marginBottom: '10px' }}>✅</div>
+                    <div style={{ color: '#00ff00', fontWeight: '700', fontSize: '18px', marginBottom: '5px' }}>
+                      Message Sent Successfully!
+                    </div>
+                    <div style={{ color: 'rgba(0,255,0,0.7)', fontSize: '14px' }}>
+                      We'll get back to you within 24 hours.
+                    </div>
+                  </div>
+                )}
+
+                {/* ✅ NEW: Error Message */}
+                {submitStatus === 'error' && (
+                  <div style={{
+                    marginTop: '20px',
+                    padding: '20px',
+                    backgroundColor: 'rgba(255,0,0,0.1)',
+                    border: '2px solid rgba(255,0,0,0.3)',
+                    borderRadius: '15px',
+                    textAlign: 'center',
+                    animation: 'fadeInUp 0.5s ease-out'
+                  }}>
+                    <div style={{ fontSize: '40px', marginBottom: '10px' }}>❌</div>
+                    <div style={{ color: '#ff0000', fontWeight: '700', fontSize: '18px', marginBottom: '5px' }}>
+                      Failed to Send Message
+                    </div>
+                    <div style={{ color: 'rgba(255,0,0,0.7)', fontSize: '14px' }}>
+                      Please try again or contact us directly via WhatsApp.
+                    </div>
+                  </div>
+                )}
+
                 <p style={{
                   fontSize: '12px',
                   color: 'rgba(255,255,255,0.4)',
@@ -460,8 +532,8 @@ export default function Contact() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', position: 'relative', zIndex: 2 }}>
                   {[
                     { icon: '📍', title: 'Office Address', content: 'Kazlar par, Jatrabari\nDhaka 1204\nBangladesh' },
-                    { icon: '📞', title: 'Phone', content: '+880 1958-140774\n+880 2-9876543' },
-                    { icon: '✉️', title: 'Email', content: 'contact@insaflimited.com\nprojects@insaflimited.com' },
+                    { icon: '📞', title: 'Phone', content: '+880 1958-140774' },
+                    { icon: '✉️', title: 'Email', content: 'contact@insaflimited.com' },
                     { icon: '🕐', title: 'Office Hours', content: 'Saturday - Thursday: 9:00 AM - 6:00 PM\nFriday: Closed' }
                   ].map((item, idx) => (
                     <div key={idx} className="contact-item" style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
