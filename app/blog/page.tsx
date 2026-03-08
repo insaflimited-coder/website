@@ -1,37 +1,136 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { blogPosts, type Category } from './data/blogData'
+import { useState, useEffect, useMemo, useCallback } from 'react'
+import { blogPosts } from './data/blogData'
+
+// Constants
+const POSTS_PER_PAGE = 6
+
+// ✅ নিজেই Category type define করলাম
+type BlogCategory = 
+  | 'Architecture'
+  | 'Construction'
+  | 'Technology'
+  | 'Real Estate'
+  | 'Legal & Construction'
+  | 'Interior Design'
+  | 'Sustainability'
+
+// ✅ Blog interface define করলাম
+interface Blog {
+  id: number
+  title: string
+  slug: string
+  excerpt: string
+  category: string
+  author: string
+  date: string
+  readTime: string
+  gradient?: string
+  isFeatured?: boolean
+}
+
+// ✅ LocalCategory interface
+interface LocalCategory {
+  id: BlogCategory | 'all'
+  name: string
+  nameEn: string
+  count: number
+}
+
+// All available categories
+const ALL_CATEGORIES: (BlogCategory | 'all')[] = [
+  'all',
+  'Architecture',
+  'Construction', 
+  'Technology',
+  'Real Estate',
+  'Legal & Construction',
+  'Interior Design',
+  'Sustainability'
+]
 
 export default function BlogPage() {
-  const [activeCategory, setActiveCategory] = useState<string>('all')
+  const [activeCategory, setActiveCategory] = useState<BlogCategory | 'all'>('all')
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const [visiblePosts, setVisiblePosts] = useState<number>(POSTS_PER_PAGE)
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
 
   useEffect(() => {
     setIsLoaded(true)
   }, [])
 
-  const categories: Category[] = [
-    { id: 'all', name: 'All Posts', count: blogPosts.length },
-    { id: 'architecture', name: 'Architecture', count: blogPosts.filter(b => b.category === 'architecture').length },
-    { id: 'rajuk', name: 'RAJUK Guide', count: blogPosts.filter(b => b.category === 'rajuk').length },
-    { id: 'design', name: 'Design Tips', count: blogPosts.filter(b => b.category === 'design').length },
-    { id: 'construction', name: 'Construction', count: blogPosts.filter(b => b.category === 'construction').length }
-  ]
+  // Category পরিবর্তন হলে visible posts রিসেট
+  useEffect(() => {
+    setVisiblePosts(POSTS_PER_PAGE)
+  }, [activeCategory])
 
-  const featuredPost = {
-    title: 'The Future of Sustainable Architecture in Bangladesh',
-    excerpt: 'Exploring eco-friendly building practices and green technologies that are shaping the future of construction in our country.',
-    author: 'Ar. Mohammad Rakibul Hasan',
-    date: 'December 15, 2024',
-    readTime: '8 min read',
-    category: 'Architecture'
-  }
+  // ✅ useMemo দিয়ে categories cache করা
+  const localCategories = useMemo<LocalCategory[]>(() => {
+    const categoryCounts = blogPosts.reduce((acc, post) => {
+      acc[post.category] = (acc[post.category] || 0) + 1
+      return acc
+    }, {} as Record<string, number>)
 
-  const filteredPosts = activeCategory === 'all' 
-    ? blogPosts 
-    : blogPosts.filter(post => post.category === activeCategory)
+    const categoryNames: Record<BlogCategory | 'all', string> = {
+      'all': 'সকল',
+      'Architecture': 'আর্কিটেকচার',
+      'Construction': 'কনস্ট্রাকশন',
+      'Technology': 'টেকনোলজি',
+      'Real Estate': 'রিয়েল এস্টেট',
+      'Legal & Construction': 'আইন ও নির্মাণ',
+      'Interior Design': 'ইন্টেরিয়র ডিজাইন',
+      'Sustainability': 'সাসটেইনেবিলিটি'
+    }
+
+    return ALL_CATEGORIES
+      .map(id => ({
+        id,
+        name: categoryNames[id],
+        nameEn: id === 'all' ? 'All' : id,
+        count: id === 'all' ? blogPosts.length : (categoryCounts[id] || 0)
+      }))
+      .filter(cat => cat.id === 'all' || cat.count > 0)
+  }, [])
+
+  // ✅ useMemo দিয়ে filtered posts cache করা
+  const filteredPosts = useMemo(() => {
+    if (activeCategory === 'all') {
+      return blogPosts
+    }
+    return blogPosts.filter(post => post.category === activeCategory)
+  }, [activeCategory])
+
+  // ✅ useMemo দিয়ে displayed posts cache করা
+  const displayedPosts = useMemo(() => {
+    return filteredPosts.slice(0, visiblePosts)
+  }, [filteredPosts, visiblePosts])
+
+  // ✅ Featured post
+  const featuredPost = useMemo(() => {
+    const featured = blogPosts.find(post => (post as Blog).isFeatured)
+    return featured || blogPosts[0] || null
+  }, [])
+
+  // আরও posts আছে কিনা চেক
+  const hasMorePosts = visiblePosts < filteredPosts.length
+  const remainingPosts = filteredPosts.length - visiblePosts
+
+  // ✅ useCallback দিয়ে function cache করা
+  const handleLoadMore = useCallback(() => {
+    setIsLoadingMore(true)
+    setTimeout(() => {
+      setVisiblePosts(prev => Math.min(prev + POSTS_PER_PAGE, filteredPosts.length))
+      setIsLoadingMore(false)
+    }, 300)
+  }, [filteredPosts.length])
+
+  // ✅ Category change handler
+  const handleCategoryChange = useCallback((categoryId: BlogCategory | 'all') => {
+    setActiveCategory(categoryId)
+    window.scrollTo({ top: 400, behavior: 'smooth' })
+  }, [])
 
   return (
     <div style={{ 
@@ -71,7 +170,7 @@ export default function BlogPage() {
             }}>
               <div className="pulse-dot" style={{ width: '8px', height: '8px', backgroundColor: '#FFD700', borderRadius: '50%' }}></div>
               <span style={{ color: '#FFD700', fontSize: '12px', letterSpacing: '2px', fontWeight: '600' }}>
-                INSIGHTS & KNOWLEDGE
+                {blogPosts.length}+ ARTICLES
               </span>
             </div>
 
@@ -101,7 +200,7 @@ export default function BlogPage() {
               lineHeight: '1.6'
             }}>
               Expert articles on architecture, design trends, construction tips, 
-              and RAJUK approval guidance from Bangladesh's leading architects.
+              and RAJUK approval guidance from Bangladesh&apos;s leading architects.
             </p>
           </div>
         </div>
@@ -121,129 +220,138 @@ export default function BlogPage() {
       </section>
 
       {/* FEATURED ARTICLE */}
-      <section className="fade-in-section" style={{ padding: '60px 5%', backgroundColor: '#0A0A0A' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div className="featured-article" style={{
-            background: 'linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.1))',
-            borderRadius: '30px',
-            padding: '50px',
-            border: '1px solid rgba(255,215,0,0.2)',
-            position: 'relative',
-            overflow: 'hidden'
-          }}>
-            {/* Featured Glow */}
-            <div style={{
-              position: 'absolute',
-              top: '-50px',
-              right: '-50px',
-              width: '200px',
-              height: '200px',
-              background: 'radial-gradient(circle, rgba(255,215,0,0.2), transparent)',
-              borderRadius: '50%',
-              filter: 'blur(40px)'
-            }}></div>
-
-            <div className="featured-grid" style={{ 
-              display: 'grid', 
-              gridTemplateColumns: '2fr 1fr', 
-              gap: '50px', 
-              alignItems: 'center',
+      {featuredPost && (
+        <section className="fade-in-section" style={{ padding: '60px 5%', backgroundColor: '#0A0A0A' }}>
+          <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+            <div className="featured-article" style={{
+              background: 'linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.1))',
+              borderRadius: '30px',
+              padding: '50px',
+              border: '1px solid rgba(255,215,0,0.2)',
               position: 'relative',
-              zIndex: 2
+              overflow: 'hidden'
             }}>
-              <div className="featured-content">
-                <div style={{
-                  display: 'inline-block',
-                  padding: '8px 20px',
-                  backgroundColor: 'rgba(255,215,0,0.2)',
-                  borderRadius: '30px',
-                  marginBottom: '20px'
-                }}>
-                  <span style={{ color: '#FFD700', fontSize: '12px', fontWeight: '600', letterSpacing: '2px' }}>
-                    ✨ FEATURED ARTICLE
-                  </span>
-                </div>
+              {/* Featured Glow */}
+              <div style={{
+                position: 'absolute',
+                top: '-50px',
+                right: '-50px',
+                width: '200px',
+                height: '200px',
+                background: 'radial-gradient(circle, rgba(255,215,0,0.2), transparent)',
+                borderRadius: '50%',
+                filter: 'blur(40px)'
+              }}></div>
 
-                <h2 className="featured-title" style={{
-                  fontSize: '36px',
-                  fontWeight: '900',
-                  color: 'white',
-                  marginBottom: '20px',
-                  lineHeight: '1.2'
-                }}>
-                  {featuredPost.title}
-                </h2>
-
-                <p style={{
-                  fontSize: '16px',
-                  color: 'rgba(255,255,255,0.7)',
-                  marginBottom: '25px',
-                  lineHeight: '1.6'
-                }}>
-                  {featuredPost.excerpt}
-                </p>
-
-                <div style={{
-                  display: 'flex',
-                  gap: '15px',
-                  alignItems: 'center',
-                  marginBottom: '25px',
-                  flexWrap: 'wrap',
-                  fontSize: '14px',
-                  color: 'rgba(255,255,255,0.6)'
-                }}>
-                  <span>By <span style={{ color: '#FFD700' }}>{featuredPost.author}</span></span>
-                  <span>•</span>
-                  <span>{featuredPost.date}</span>
-                  <span>•</span>
-                  <span>{featuredPost.readTime}</span>
-                </div>
-
-                <button className="btn-glow" style={{
-                  padding: '14px 30px',
-                  background: 'linear-gradient(135deg, #FFD700, #FFA500)',
-                  border: 'none',
-                  borderRadius: '50px',
-                  color: '#0A0A0A',
-                  fontWeight: '800',
-                  fontSize: '14px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}>
-                  <span style={{ position: 'relative', zIndex: 2 }}>READ ARTICLE</span>
-                  <span style={{ position: 'relative', zIndex: 2 }}>→</span>
-                </button>
-              </div>
-
-              <div className="featured-visual" style={{
-                width: '100%',
-                height: '280px',
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
-                borderRadius: '20px',
-                display: 'flex',
+              <div className="featured-grid" style={{ 
+                display: 'grid', 
+                gridTemplateColumns: '2fr 1fr', 
+                gap: '50px', 
                 alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '70px'
+                position: 'relative',
+                zIndex: 2
               }}>
-                📰
+                <div className="featured-content">
+                  <div style={{
+                    display: 'inline-block',
+                    padding: '8px 20px',
+                    backgroundColor: 'rgba(255,215,0,0.2)',
+                    borderRadius: '30px',
+                    marginBottom: '20px'
+                  }}>
+                    <span style={{ color: '#FFD700', fontSize: '12px', fontWeight: '600', letterSpacing: '2px' }}>
+                      ✨ FEATURED ARTICLE
+                    </span>
+                  </div>
+
+                  <h2 className="featured-title" style={{
+                    fontSize: '36px',
+                    fontWeight: '900',
+                    color: 'white',
+                    marginBottom: '20px',
+                    lineHeight: '1.2'
+                  }}>
+                    {featuredPost.title}
+                  </h2>
+
+                  <p style={{
+                    fontSize: '16px',
+                    color: 'rgba(255,255,255,0.7)',
+                    marginBottom: '25px',
+                    lineHeight: '1.6'
+                  }}>
+                    {featuredPost.excerpt}
+                  </p>
+
+                  <div style={{
+                    display: 'flex',
+                    gap: '15px',
+                    alignItems: 'center',
+                    marginBottom: '25px',
+                    flexWrap: 'wrap',
+                    fontSize: '14px',
+                    color: 'rgba(255,255,255,0.6)'
+                  }}>
+                    <span>By <span style={{ color: '#FFD700' }}>{featuredPost.author}</span></span>
+                    <span>•</span>
+                    <span>{featuredPost.date}</span>
+                    <span>•</span>
+                    <span>{featuredPost.readTime}</span>
+                  </div>
+
+                  <Link href={`/blog/${featuredPost.slug}`}>
+                    <button className="btn-glow" style={{
+                      padding: '14px 30px',
+                      background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                      border: 'none',
+                      borderRadius: '50px',
+                      color: '#0A0A0A',
+                      fontWeight: '800',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      position: 'relative',
+                      overflow: 'hidden'
+                    }}>
+                      <span style={{ position: 'relative', zIndex: 2 }}>READ ARTICLE</span>
+                      <span style={{ position: 'relative', zIndex: 2 }}>→</span>
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="featured-visual" style={{
+                  width: '100%',
+                  height: '280px',
+                  background: featuredPost.gradient || 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+                  borderRadius: '20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '70px'
+                }}>
+                  📰
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CATEGORY FILTERS */}
       <section className="fade-in-section" style={{ padding: '40px 5%', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div className="filter-buttons" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            {categories.map((cat) => (
+          <div className="filter-buttons" style={{ 
+            display: 'flex', 
+            gap: '12px', 
+            flexWrap: 'wrap', 
+            justifyContent: 'center' 
+          }}>
+            {localCategories.map((cat) => (
               <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
+                key={String(cat.id)}
+                onClick={() => handleCategoryChange(cat.id)}
                 className="category-btn"
                 style={{
                   padding: '10px 22px',
@@ -258,7 +366,8 @@ export default function BlogPage() {
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px'
+                  gap: '8px',
+                  transition: 'all 0.3s ease'
                 }}
               >
                 {cat.name}
@@ -280,12 +389,28 @@ export default function BlogPage() {
       {/* BLOG POSTS GRID */}
       <section className="fade-in-section" style={{ padding: '70px 5%', backgroundColor: '#0F0F0F' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          
+          {/* Posts Count Info */}
+          <div style={{ 
+            textAlign: 'center', 
+            marginBottom: '30px',
+            color: 'rgba(255,255,255,0.5)',
+            fontSize: '14px'
+          }}>
+            দেখাচ্ছে <span style={{ color: '#FFD700', fontWeight: '600' }}>{displayedPosts.length}</span> / <span style={{ color: '#FFD700', fontWeight: '600' }}>{filteredPosts.length}</span> টি আর্টিকেল
+            {activeCategory !== 'all' && (
+              <span style={{ marginLeft: '10px' }}>
+                ({localCategories.find(c => c.id === activeCategory)?.name})
+              </span>
+            )}
+          </div>
+
           <div className="blog-grid" style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
             gap: '25px' 
           }}>
-            {filteredPosts.map((post) => (
+            {displayedPosts.map((post, index) => (
               <article
                 key={post.id}
                 className="blog-card"
@@ -294,7 +419,8 @@ export default function BlogPage() {
                   borderRadius: '20px',
                   overflow: 'hidden',
                   border: '1px solid rgba(255,255,255,0.1)',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  animation: `fadeInUp 0.5s ease ${index * 0.05}s both`
                 }}
               >
                 {/* Image */}
@@ -330,7 +456,11 @@ export default function BlogPage() {
                     fontWeight: '700',
                     color: 'white',
                     marginBottom: '12px',
-                    lineHeight: '1.3'
+                    lineHeight: '1.3',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
                   }}>
                     {post.title}
                   </h3>
@@ -339,7 +469,11 @@ export default function BlogPage() {
                     fontSize: '14px',
                     color: 'rgba(255,255,255,0.6)',
                     marginBottom: '20px',
-                    lineHeight: '1.5'
+                    lineHeight: '1.5',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
                   }}>
                     {post.excerpt}
                   </p>
@@ -379,21 +513,96 @@ export default function BlogPage() {
             ))}
           </div>
 
-          {/* Load More */}
-          <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <button className="load-more-btn" style={{
-              padding: '14px 35px',
-              background: 'transparent',
-              border: '2px solid rgba(255,215,0,0.3)',
-              borderRadius: '50px',
-              color: '#FFD700',
-              fontWeight: '700',
-              fontSize: '14px',
-              cursor: 'pointer'
+          {/* Load More Button */}
+          {hasMorePosts && (
+            <div style={{ textAlign: 'center', marginTop: '50px' }}>
+              <button 
+                onClick={handleLoadMore}
+                disabled={isLoadingMore}
+                className="load-more-btn" 
+                style={{
+                  padding: '14px 35px',
+                  background: isLoadingMore ? 'rgba(255,215,0,0.3)' : 'transparent',
+                  border: '2px solid rgba(255,215,0,0.3)',
+                  borderRadius: '50px',
+                  color: '#FFD700',
+                  fontWeight: '700',
+                  fontSize: '14px',
+                  cursor: isLoadingMore ? 'not-allowed' : 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  opacity: isLoadingMore ? 0.7 : 1
+                }}
+              >
+                {isLoadingMore ? (
+                  <>
+                    <span className="loading-spinner"></span>
+                    LOADING...
+                  </>
+                ) : (
+                  <>
+                    LOAD MORE ARTICLES
+                    <span style={{
+                      padding: '4px 10px',
+                      backgroundColor: 'rgba(255,215,0,0.2)',
+                      borderRadius: '20px',
+                      fontSize: '12px'
+                    }}>
+                      +{remainingPosts > POSTS_PER_PAGE ? POSTS_PER_PAGE : remainingPosts}
+                    </span>
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+
+          {/* All Posts Loaded */}
+          {!hasMorePosts && filteredPosts.length > POSTS_PER_PAGE && (
+            <div style={{ 
+              textAlign: 'center', 
+              marginTop: '50px',
+              padding: '20px',
+              backgroundColor: 'rgba(255,215,0,0.1)',
+              borderRadius: '15px',
+              border: '1px solid rgba(255,215,0,0.2)'
             }}>
-              LOAD MORE ARTICLES
-            </button>
-          </div>
+              <span style={{ color: '#FFD700', fontSize: '14px' }}>
+                ✅ সব {filteredPosts.length}টি আর্টিকেল দেখানো হয়েছে
+              </span>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {filteredPosts.length === 0 && (
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '60px 20px',
+              backgroundColor: 'rgba(255,255,255,0.03)',
+              borderRadius: '20px',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}>
+              <div style={{ fontSize: '50px', marginBottom: '20px' }}>📭</div>
+              <h3 style={{ color: 'white', marginBottom: '10px' }}>কোন আর্টিকেল পাওয়া যায়নি</h3>
+              <p style={{ color: 'rgba(255,255,255,0.5)', marginBottom: '20px' }}>
+                এই ক্যাটাগরিতে এখনো কোন আর্টিকেল নেই
+              </p>
+              <button 
+                onClick={() => handleCategoryChange('all')}
+                style={{
+                  padding: '10px 25px',
+                  background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                  border: 'none',
+                  borderRadius: '25px',
+                  color: '#0A0A0A',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                সব আর্টিকেল দেখুন
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -405,7 +614,6 @@ export default function BlogPage() {
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* CTA Rings */}
         <div className="cta-ring ring-1"></div>
         <div className="cta-ring ring-2"></div>
 
@@ -434,7 +642,7 @@ export default function BlogPage() {
             color: 'white',
             marginBottom: '15px'
           }}>
-            Get Weekly <span className="shimmer-text" style={{ color: '#FFD700' }}>Insights</span>
+            Get Weekly <span style={{ color: '#FFD700' }}>Insights</span>
           </h2>
 
           <p style={{
@@ -478,11 +686,9 @@ export default function BlogPage() {
               fontWeight: '800',
               fontSize: '14px',
               cursor: 'pointer',
-              whiteSpace: 'nowrap',
-              position: 'relative',
-              overflow: 'hidden'
+              whiteSpace: 'nowrap'
             }}>
-              <span style={{ position: 'relative', zIndex: 2 }}>SUBSCRIBE</span>
+              SUBSCRIBE
             </button>
           </div>
 
@@ -496,9 +702,152 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* CSS - Your existing styles */}
+      {/* CSS Animations */}
       <style>{`
-        /* All your existing CSS animations */
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+        
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        
+        .pulse-dot {
+          animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .loading-spinner {
+          width: 16px;
+          height: 16px;
+          border: 2px solid rgba(255,215,0,0.3);
+          border-top-color: #FFD700;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+        
+        .blog-card {
+          transition: all 0.3s ease;
+        }
+        
+        .blog-card:hover {
+          transform: translateY(-5px);
+          border-color: rgba(255,215,0,0.3) !important;
+        }
+        
+        .card-image {
+          transition: all 0.3s ease;
+        }
+        
+        .blog-card:hover .card-image {
+          transform: scale(1.02);
+        }
+        
+        .category-btn:hover {
+          transform: translateY(-2px);
+          border-color: rgba(255,215,0,0.4) !important;
+        }
+        
+        .btn-glow {
+          transition: all 0.3s ease;
+        }
+        
+        .btn-glow:hover {
+          transform: scale(1.05);
+          box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+        }
+        
+        .load-more-btn {
+          transition: all 0.3s ease;
+        }
+        
+        .load-more-btn:hover:not(:disabled) {
+          background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+          color: #0A0A0A !important;
+          border-color: transparent !important;
+          transform: translateY(-3px);
+          box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+        }
+        
+        .newsletter-input:focus {
+          border-color: rgba(255,215,0,0.5) !important;
+        }
+        
+        .arrow {
+          transition: transform 0.3s ease;
+        }
+        
+        .read-more:hover .arrow {
+          transform: translateX(5px);
+        }
+        
+        .cta-ring {
+          position: absolute;
+          border-radius: 50%;
+          border: 1px solid rgba(255,215,0,0.1);
+        }
+        
+        .ring-1 {
+          width: 400px;
+          height: 400px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+        
+        .ring-2 {
+          width: 600px;
+          height: 600px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+        
+        @media (max-width: 768px) {
+          .hero-heading {
+            font-size: 42px !important;
+            letter-spacing: -1px !important;
+          }
+          
+          .featured-grid {
+            grid-template-columns: 1fr !important;
+          }
+          
+          .featured-visual {
+            display: none !important;
+          }
+          
+          .featured-article {
+            padding: 30px !important;
+          }
+          
+          .featured-title {
+            font-size: 26px !important;
+          }
+          
+          .blog-grid {
+            grid-template-columns: 1fr !important;
+          }
+          
+          .newsletter-heading {
+            font-size: 28px !important;
+          }
+          
+          .newsletter-form {
+            flex-direction: column;
+          }
+        }
       `}</style>
     </div>
   )
