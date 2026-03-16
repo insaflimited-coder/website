@@ -154,7 +154,7 @@ export default function ExpertsPage() {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 animation: 'gradientShift 4s ease-in-out infinite'
-              }}>Architect Team</span>
+              }}>Architectural Team</span>
             </h1>
 
             <p style={{
@@ -166,8 +166,7 @@ export default function ExpertsPage() {
               margin: '0 auto',
               animation: 'fadeInUp 1.2s ease-out 0.4s backwards'
             }}>
-              Meet the visionaries behind Insaf Limited. A powerhouse of certified engineers 
-              and creative architects dedicated to your safety and luxury.
+              Meet the visionaries behind Insaf Building Design & Consultant Ltd. — a dedicated team of certified engineers and creative architects committed to delivering safe, modern, and luxurious buildings.
             </p>
 
             {/* ✅ STATS ROW */}
@@ -859,8 +858,7 @@ export default function ExpertsPage() {
               lineHeight: '1.8', 
               marginBottom: '40px' 
             }}>
-              Contact our expert engineers directly for solutions regarding your land type or building design.
-            </p>
+Reach out to our team of experienced engineers and architects for professional advice on site analysis, structural planning, and architectural design. We’re here to turn your vision into a well-executed reality.            </p>
             
             <div style={{ display: 'grid', gap: '20px' }}>
               {[

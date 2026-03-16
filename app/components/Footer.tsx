@@ -153,7 +153,8 @@ export default function Footer() {
               marginBottom: '25px',
               maxWidth: '300px'
             }}>
-              Creating architectural excellence since 2018. We transform visions into reality with innovative designs and sustainable solutions. <span style={{ color: '#FFD700' }}>530+ projects</span> delivered successfully.
+              Creating Architectural Excellence Since 2018 We turn visions into reality through innovative designs, structural expertise, and sustainable solutions. 
+<span style={{ color: '#FFD700' }}> 530+ projects</span> delivered successfully.
             </p>
             
             {/* ✅ Social Links with Enhanced Hover */}

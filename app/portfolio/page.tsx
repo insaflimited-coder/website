@@ -960,8 +960,7 @@ const projects: Project[] = [
               lineHeight: '1.8',
               animation: 'fadeInUp 1.2s ease-out 0.4s backwards'
             }}>
-              Explore our collection of architectural masterpieces that define 
-              Bangladesh&apos;s luxury landscape.
+              Explore our collection of residential and commercial projects that showcase modern design, structural precision, and luxury living across Bangladesh.
             </p>
 
             <div className="hero-stats" style={{
@@ -1541,7 +1540,7 @@ const projects: Project[] = [
             margin: '0 auto 50px',
             lineHeight: '1.7'
           }}>
-            Join 530+ satisfied clients who trusted us with their dream projects.
+            Join 1000+ satisfied clients who trusted us with their dream projects.
           </p>
 
           <div className="cta-buttons" style={{ 

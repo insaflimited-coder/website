@@ -199,8 +199,7 @@ export default function BlogPage() {
               maxWidth: '600px',
               lineHeight: '1.6'
             }}>
-              Expert articles on architecture, design trends, construction tips, 
-              and RAJUK approval guidance from Bangladesh&apos;s leading architects.
+              Explore expert articles on architecture, design trends, construction best practices, and RAJUK approval guidance from Bangladesh’s leading building design professionals.
             </p>
           </div>
         </div>

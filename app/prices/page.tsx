@@ -321,8 +321,8 @@ export default function ServicePricesPage() {
               margin: '0 auto 50px',
               animation: 'fadeInUp 1.2s ease-out 0.4s backwards'
             }}>
-              Professional architectural services with complete RAJUK approval support.<br/>
-              Choose the perfect package for your construction needs.
+              Professional architectural and structural design services with full RAJUK plan approval support.<br/>
+              Choose the package that best fits your project type, size, and requirements, and let our expert team guide you from concept to completion.
             </p>
 
             <div style={{ 
@@ -982,7 +982,7 @@ export default function ServicePricesPage() {
               fontWeight: '600',
               animation: 'badgeGlow 3s ease-in-out infinite'
             }}>
-              🎯 LIMITED SLOTS AVAILABLE
+              🎯 Begin Your Architectural Journey
             </span>
           </div>
 
@@ -994,14 +994,14 @@ export default function ServicePricesPage() {
             lineHeight: '1.1',
             animation: 'fadeInUp 1s ease-out 0.2s backwards'
           }}>
-            Ready to Build Your<br/>
+            Ready to Create a<br/>
             <span style={{ 
               background: 'linear-gradient(135deg, #FFD700, #FFA500, #FFD700)',
               backgroundSize: '200% 100%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               animation: 'gradientShift 3s ease-in-out infinite'
-            }}>Architectural Legacy?</span>
+            }}>Building That Lasts?</span>
           </h2>
 
           <p style={{ 
@@ -1011,8 +1011,9 @@ export default function ServicePricesPage() {
             lineHeight: '1.7',
             animation: 'fadeInUp 1.2s ease-out 0.4s backwards'
           }}>
-            Join 530+ satisfied clients who trusted us with their vision.<br/>
-            Free consultation for the first 10 inquiries this month.
+            Over 530 successful projects completed with precision and care. Our expert team provides architectural design, structural planning, and RAJUK approval support tailored to your needs.
+
+Schedule your free consultation today.
           </p>
 
           <div style={{ 

@@ -93,7 +93,7 @@ export default function Home() {
                 animation: 'pulseDot 2s ease-in-out infinite' 
               }}></div>
               <span style={{ color: '#FFD700', fontSize: '12px', letterSpacing: '2px', fontWeight: '600' }}>
-                RAJUK PANEL LISTED
+                Trusted by Professionals & Approved by RAJUK
               </span>
             </div>
 
@@ -106,19 +106,19 @@ export default function Home() {
               letterSpacing: '-2px',
               animation: 'fadeInUp 1s ease-out 0.2s backwards'
             }}>
-              DESIGN<br/>
+              Where Smart<br/>
               <span style={{ 
                 color: 'transparent', 
                 WebkitTextStroke: '2px #FFD700',
                 animation: 'strokeGlow 3s ease-in-out infinite'
-              }}>BEYOND</span><br/>
+              }}>Design Meets</span><br/>
               <span style={{ 
                 background: 'linear-gradient(135deg, #FFD700, #FFA500, #FF6B6B, #FFD700)',
                 backgroundSize: '300% 100%',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 animation: 'gradientShift 4s ease-in-out infinite'
-              }}>LUXURY</span>
+              }}>Structural Strength</span>
             </h1>
 
             <p style={{ 
@@ -129,8 +129,7 @@ export default function Home() {
               maxWidth: '450px',
               animation: 'fadeInUp 1.2s ease-out 0.4s backwards'
             }}>
-              Where architectural excellence meets structural precision. 
-              Creating spaces that define Bangladesh&apos;s skyline since 2018.
+              Professional architectural design, structural engineering, and RAJUK plan approval support for residential and commercial buildings across Bangladesh.
             </p>
 
             <div style={{ 
@@ -141,9 +140,9 @@ export default function Home() {
               animation: 'fadeInUp 1.4s ease-out 0.6s backwards'
             }}>
               {[
-                { number: '530+', label: 'PROJECTS' },
-                { number: '8+', label: 'YEARS' },
-                { number: '100%', label: 'SUCCESS' }
+                { number: '530+', label: 'Projects Completed' },
+                { number: '8+', label: 'Years of Experience' },
+                { number: '100%', label: 'RAJUK Approval Success' }
               ].map((stat, idx) => (
                 <div key={idx} style={{
                   animation: `statPop 0.6s ease-out ${0.8 + idx * 0.15}s backwards`
@@ -397,7 +396,7 @@ export default function Home() {
                 marginBottom: '20px',
                 animation: 'fadeIn 0.8s ease-out 0.5s backwards'
               }}>
-                530+ successful approvals with 100% success rate. Fast-track processing.
+                100+ successful approvals with 100% success rate. Fast-track processing.
               </p>
               <span style={{ 
                 padding: '8px 18px', 
@@ -792,9 +791,9 @@ export default function Home() {
             gap: '30px' 
           }}>
             {[
-              { name: 'Ahmed Hassan', role: 'CEO, Hassan Group', text: 'INSAF transformed our vision into an architectural masterpiece. Their attention to detail and RAJUK expertise saved us months.', rating: 5 },
-              { name: 'Tahmina Rahman', role: 'Homeowner', text: 'From concept to completion, the team exceeded every expectation. Our dream home is now a reality thanks to their dedication.', rating: 5 },
-              { name: 'Rafiq Industries', role: 'Commercial Developer', text: '530+ projects speak volumes. They delivered our complex on time with zero RAJUK issues. Highly recommended!', rating: 5 }
+              { name: 'Md. Abdul Kadir Bhuiyan.', role: 'Journalist', text: 'INSAF transformed our vision into an architectural masterpiece. Their attention to detail and RAJUK expertise saved us months.', rating: 5 },
+              { name: 'Md. Sajeeb Bhuiyan', role: 'Homeowner', text: 'From concept to completion, the team exceeded every expectation. Our dream home is now a reality thanks to their dedication.', rating: 5 },
+              { name: 'Md. Rafiqul Islam', role: 'Businessman', text: '530+ projects speak volumes. They delivered our complex on time with zero RAJUK issues. Highly recommended!', rating: 5 }
             ].map((testimonial, idx) => (
               <div key={idx} className="testimonial-card" style={{
                 background: 'rgba(255,255,255,0.03)',
@@ -908,11 +907,11 @@ export default function Home() {
             }}></div>
 
             {[
-              { step: '01', title: 'Consultation', desc: 'Understanding your vision and requirements', time: 'Week 1', color: '#667eea' },
-              { step: '02', title: 'Feasibility Study', desc: 'DAP check, site analysis, and budget planning', time: 'Week 2-3', color: '#f093fb' },
-              { step: '03', title: 'Design Development', desc: '3D visualization and architectural planning', time: 'Week 4-8', color: '#4facfe' },
-              { step: '04', title: 'RAJUK Submission', desc: 'Complete documentation and approval process', time: 'Month 3-6', color: '#43e97b' },
-              { step: '05', title: 'Construction Support', desc: 'Site supervision and quality assurance', time: 'Ongoing', color: '#fa709a' }
+              { step: '01', title: 'Consultation', desc: 'Understanding your vision and project requirements to plan the best approach.', time: 'Week 1', color: '#667eea' },
+              { step: '02', title: 'Feasibility Study', desc: 'Site analysis, DAP check, and budget planning to ensure a practical and compliant design.', time: 'Week 2-3', color: '#f093fb' },
+              { step: '03', title: 'Design Development', desc: '3D visualization, architectural planning, and structural concept development for your project.', time: 'Week 4-8', color: '#4facfe' },
+              { step: '04', title: 'RAJUK Submission', desc: 'Complete documentation, coordination, and approval process with RAJUK for hassle-free compliance.', time: 'Month 3-6', color: '#43e97b' },
+              { step: '05', title: 'Construction Support', desc: 'Professional site supervision, quality assurance, and technical support throughout construction.', time: 'Ongoing', color: '#fa709a' }
             ].map((process, idx) => (
               <div key={idx} className="process-step" style={{
                 display: 'flex',
@@ -1036,7 +1035,7 @@ export default function Home() {
                 fontWeight: '600',
                 animation: 'pulseGlow 2s ease-in-out infinite, badgeGlow 3s ease-in-out infinite'
               }}>
-                LIMITED SLOTS AVAILABLE
+                BUILD WITH CONFIDENCE 
               </span>
             </div>
 
@@ -1048,7 +1047,7 @@ export default function Home() {
               lineHeight: '1.1',
               animation: 'fadeInUp 1s ease-out 0.2s backwards'
             }}>
-              Ready to Build Your<br/>
+              Ready to Start Your<br/>
               <span style={{ 
                 background: 'linear-gradient(135deg, #FFD700, #FFA500, #FFD700)',
                 backgroundSize: '200% 100%',
@@ -1066,9 +1065,8 @@ export default function Home() {
               margin: '0 auto 50px',
               animation: 'fadeInUp 1.2s ease-out 0.4s backwards'
             }}>
-              Join 530+ satisfied clients who trusted us with their vision. 
-              Free consultation for the first 10 inquiries this month.
-            </p>
+Join 1000+ satisfied clients who have trusted Insaf Building Design & Consultant Ltd. to turn their architectural dreams into reality.
+We combine modern architectural aesthetics with strong structural engineering to create spaces that inspire and stand the test of time.            </p>
 
             <div style={{ 
               display: 'flex', 
@@ -1143,7 +1141,7 @@ export default function Home() {
               <span style={{ margin: '0 20px' }}>•</span>
               <span style={{ color: '#FFD700', animation: 'starTwinkle 1.5s ease-in-out infinite 0.3s' }}>✓</span> 100% RAJUK success rate
               <span style={{ margin: '0 20px' }}>•</span>
-              <span style={{ color: '#FFD700', animation: 'starTwinkle 1.5s ease-in-out infinite 0.6s' }}>✓</span> In-house engineers
+              <span style={{ color: '#FFD700', animation: 'starTwinkle 1.5s ease-in-out infinite 0.6s' }}>✓</span> Expert Engineering Team
             </div>
           </div>
         </div>

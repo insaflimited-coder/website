@@ -160,7 +160,7 @@ export default function Services() {
               letterSpacing: '-3px',
               animation: 'fadeInUp 1s ease-out 0.2s backwards'
             }}>
-              SERVICES THAT
+              COMPLETE BUILDING
               <br />
               <span style={{
                 background: 'linear-gradient(135deg, #FFD700, #FFA500, #FF6B6B, #FFD700)',
@@ -168,7 +168,7 @@ export default function Services() {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 animation: 'gradientShift 4s ease-in-out infinite'
-              }}>TRANSFORM</span>
+              }}>DESIGN SOLUTIONS</span>
             </h1>
 
             <p className="hero-subtitle" style={{
@@ -180,8 +180,7 @@ export default function Services() {
               lineHeight: '1.6',
               animation: 'fadeInUp 1.2s ease-out 0.4s backwards'
             }}>
-              From architectural brilliance to structural precision, we deliver 
-              comprehensive solutions that exceed expectations.
+              From architectural design to structural engineering, we provide reliable consultancy for safe and modern buildings.
             </p>
 
             {/* ✅ STATS WITH COUNTER ANIMATION */}
@@ -759,7 +758,7 @@ export default function Services() {
             animation: 'fadeInDown 0.8s ease-out'
           }}>
             <span style={{ color: '#FFD700', fontSize: '13px', letterSpacing: '2px', fontWeight: '600' }}>
-              LIMITED SLOTS AVAILABLE
+              START YOUR PROJECT WITH US
             </span>
           </div>
 
@@ -771,7 +770,7 @@ export default function Services() {
             lineHeight: '1.1',
             animation: 'fadeInUp 1s ease-out 0.2s backwards'
           }}>
-            Ready to Start Your
+            Ready to Begin Your
             <br />
             <span style={{
               background: 'linear-gradient(135deg, #FFD700, #FFA500, #FFD700)',
@@ -790,7 +789,7 @@ export default function Services() {
             margin: '0 auto 50px',
             animation: 'fadeInUp 1.2s ease-out 0.4s backwards'
           }}>
-            Free consultation for the first 10 inquiries this month.
+           We offer free initial consultation for new clients to discuss your vision, requirements, and the best building solutions.
           </p>
 
           <div className="cta-buttons-final" style={{ 

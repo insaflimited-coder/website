@@ -77,16 +77,16 @@ export default function About() {
                 marginBottom: '30px',
                 letterSpacing: '-2px'
               }}>
-                <span className="text-reveal">CRAFTING</span>
+                <span className="text-reveal">DESIGNING</span>
                 <br />
                 <span className="gradient-text" style={{
                   background: 'linear-gradient(135deg, #FFD700, #FFA500)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   display: 'inline-block'
-                }}>EXCELLENCE</span>
+                }}>BUILDINGS</span>
                 <br />
-                <span className="text-reveal" style={{ animationDelay: '0.4s' }}>SINCE 2018</span>
+                <span className="text-reveal" style={{ animationDelay: '0.4s' }}>WITH PRECISION</span>
               </h1>
 
               <p className="hero-subtitle" style={{
@@ -99,8 +99,7 @@ export default function About() {
                 transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
                 transition: 'all 1s ease-out 0.5s'
               }}>
-                From a vision to redefine architectural standards to becoming Bangladesh's 
-                most trusted name in luxury design and structural excellence.
+                What started as a vision to improve architectural standards has grown into a trusted building design and structural consultancy serving clients across Bangladesh.
               </p>
 
               <div className="stats-row" style={{ display: 'flex', gap: '40px', marginBottom: '40px', flexWrap: 'wrap' }}>
@@ -180,9 +179,11 @@ export default function About() {
                 From Vision to Reality
               </h3>
               <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.6)', lineHeight: '1.8', marginBottom: '25px' }}>
-                Founded by Architect Mohammad Insaf in 2018, our studio emerged from a singular vision: 
-                to redefine architectural excellence in Bangladesh by merging international design standards 
-                with local expertise.
+                Founded by Engr. Muhammad Sheik Rakibul Hasan in 2018, Insaf Building Design & Consultant Ltd. was established with a clear vision — to improve the standard of building design and structural planning in Bangladesh by combining modern architectural concepts with strong engineering principles.
+
+What began as a small two-person initiative has steadily grown into a professional consultancy supported by a team of architects, structural engineers, and technical specialists.
+
+Today, the firm has successfully delivered hundreds of residential and commercial building design projects, helping clients transform their ideas into safe, functional, and modern structures.
               </p>
               <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.6)', lineHeight: '1.8', marginBottom: '25px' }}>
                 What started as a two-person operation has grown into a full-service architectural firm 
@@ -204,11 +205,11 @@ export default function About() {
                 Our Achievements
               </h3>
               {[
-                { year: '2018', title: 'Studio Founded', desc: 'Started our journey with a vision' },
-                { year: '2019', title: 'RAJUK Panel Listed', desc: 'Official recognition achieved' },
-                { year: '2020', title: '100 Projects', desc: 'First major milestone reached' },
-                { year: '2022', title: 'Team Expansion', desc: 'Grew to 25+ professionals' },
-                { year: '2024', title: '500+ Projects', desc: 'Became industry leader' }
+                { year: '2018', title: 'Company Founded', desc: 'Started with a vision to deliver reliable building design and consultancy services.' },
+                { year: '2019', title: 'Professional Recognition', desc: 'Expanded services and strengthened industry connections.' },
+                { year: '2020', title: '100+ Projects Completed', desc: 'Reached our first major milestone.' },
+                { year: '2022', title: 'Team Expansion', desc: 'The team grew with experienced engineers and designers.' },
+                { year: '2025', title: '500+ Projects Milestone', desc: 'Continued growth with successful residential and commercial projects.' }
               ].map((achievement, idx) => (
                 <div key={idx} className="timeline-item" style={{
                   display: 'flex',
@@ -378,7 +379,7 @@ export default function About() {
             maxWidth: '600px',
             margin: '0 auto 50px'
           }}>
-            Join 530+ satisfied clients who trusted us with their vision.
+            Join 1000+ satisfied clients who trusted us with their vision.
           </p>
           <div className="cta-buttons-final" style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/contact">

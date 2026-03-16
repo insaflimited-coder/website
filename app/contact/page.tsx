@@ -172,8 +172,9 @@ export default function Contact() {
                   lineHeight: '1.6',
                   maxWidth: '500px'
                 }}>
-                  Ready to start your project? Get in touch with our team for a 
-                  free consultation and let us bring your vision to life.
+                  Ready to Start Your Project?
+
+Get in touch with our team of architects and engineers for a free consultation. Let us guide you from concept to completion and bring your vision to life with safe, modern, and structurally sound designs.
                 </p>
 
                 {/* Quick Contact Options */}
