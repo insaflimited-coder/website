@@ -533,9 +533,9 @@ Get in touch with our team of architects and engineers for a free consultation. 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', position: 'relative', zIndex: 2 }}>
                   {[
                     { icon: '📍', title: 'Office Address', content: 'Kazlar par, Jatrabari\nDhaka 1204\nBangladesh' },
-                    { icon: '📞', title: 'Phone', content: '+880 1958-140774' },
+                    { icon: '📞', title: 'Phone', content: '+880 1958-140774 | 01939-294938' },
                     { icon: '✉️', title: 'Email', content: 'contact@insaflimited.com' },
-                    { icon: '🕐', title: 'Office Hours', content: 'Saturday - Thursday: 9:00 AM - 6:00 PM\nFriday: Closed' }
+                    { icon: '🕐', title: 'Office Hours', content: 'Saturday - Thursday: 9:30 AM - 7:30 PM\nFriday: Closed' }
                   ].map((item, idx) => (
                     <div key={idx} className="contact-item" style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
                       <div style={{

@@ -11,9 +11,10 @@ export default function ExpertsPage() {
   }, [])
 
   const engineeringTeam = [
+    { name: 'Engr. Sheikh Rakibul Hasan', role: 'Design Engineer', degree: 'B.Sc Engr. (Civil)', icon: '👷', color: '#4facfe' },
     { name: 'Engr. Md. Shoriful Islam', role: 'Senior Design Engineer', degree: 'B.Sc Engr. (Civil), M.Sc Engr. (Cont.)', extra: 'Safety Management Certificate (BUIT)', icon: '👷', color: '#667eea' },
     { name: 'Engr. Md. Kamruzzaman Kiron', role: 'Design Engineer', degree: 'B.Sc Engr. (Civil)', icon: '👷', color: '#f093fb' },
-    { name: 'Engr. Sheikh Rakibul Hasan', role: 'Design Engineer', degree: 'B.Sc Engr. (Civil)', icon: '👷', color: '#4facfe' },
+    
     { name: 'Engr. Md. Rakib Hosen', role: 'Design Engineer', degree: 'B.Sc Engr. (Civil)', icon: '👷', color: '#43e97b' },
     { name: 'Engr. Jamil Ahmed', role: 'Chemical Engineer', degree: 'M.Sc Engineer (Chemical)', icon: '👷', color: '#fa709a' },
     { name: 'Engr. Md. Ohidul Islam', role: 'Engineer', degree: 'B.Sc Engr. (Civil)', icon: '👷', color: '#ffecd2' },
@@ -33,13 +34,7 @@ export default function ExpertsPage() {
     { name: 'Engr. Md. Moniruzzaman', role: 'Electrical Engineer', degree: 'B.Sc Engr. (EEE)', icon: '⚡', color: '#FFA500' },
     { name: 'Engr. Md. Johirul Islam', role: 'Plumbing Engineer', degree: 'Expert in Sanitation', icon: '💧', color: '#4facfe' },
     { name: 'Engr. Md. Totul Ahmed', role: 'Plumbing Engineer', degree: 'Expert in Sanitation', icon: '💧', color: '#00f2fe' },
-  ]
-
-  const managementTeam = [
-    { name: 'Asifur Rahman Fahim', role: 'General Manager', degree: 'Corporate Strategy', icon: '💼', color: '#667eea' },
-    { name: 'Md. Mahdi Hasan', role: 'General Manager (Real Estate)', degree: 'Real Estate Expert', icon: '💼', color: '#f093fb' },
-    { name: 'Md. Ruhul Amin', role: 'Project Co-ordinator', degree: 'On-site Execution', icon: '📋', color: '#4facfe' },
-    { name: 'Md. Talha', role: 'Marketing Manager', degree: 'Client Relations', icon: '📊', color: '#43e97b' },
+  
   ]
 
   const inputStyle: React.CSSProperties = {
@@ -677,145 +672,6 @@ export default function ExpertsPage() {
         </div>
       </section>
 
-      {/* ✅ MANAGEMENT TEAM */}
-      <section className="fade-in-section" style={{ 
-        padding: '100px 5%', 
-        backgroundColor: '#0A0A0A',
-        position: 'relative',
-        zIndex: 1
-      }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ marginBottom: '60px' }}>
-            <div style={{ 
-              color: '#FFD700', 
-              fontSize: '14px', 
-              letterSpacing: '3px', 
-              marginBottom: '15px',
-              animation: 'fadeIn 0.8s ease-out'
-            }}>
-              LEADERSHIP
-            </div>
-            <h2 className="section-heading" style={{ 
-              fontSize: '48px', 
-              fontWeight: '900', 
-              color: 'white', 
-              letterSpacing: '-1px',
-              borderLeft: '6px solid white',
-              paddingLeft: '25px',
-              animation: 'fadeInUp 1s ease-out 0.2s backwards'
-            }}>
-              Management & <span style={{
-                background: 'linear-gradient(135deg, #FFD700, #FFA500)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}>Survey Team</span>
-            </h2>
-          </div>
-
-          <div className="team-grid" style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(4, 1fr)', 
-            gap: '30px' 
-          }}>
-            {managementTeam.map((member, idx) => (
-              <div 
-                key={idx} 
-                className="expert-card"
-                onMouseEnter={() => setHoveredCard(300 + idx)}
-                onMouseLeave={() => setHoveredCard(null)}
-                style={{
-                  background: hoveredCard === 300 + idx 
-                    ? `${member.color}15` 
-                    : 'rgba(255,255,255,0.03)',
-                  borderRadius: '25px',
-                  padding: '35px',
-                  border: hoveredCard === 300 + idx 
-                    ? `2px solid ${member.color}40` 
-                    : '1px solid rgba(255,255,255,0.1)',
-                  textAlign: 'center',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  animation: `cardReveal 0.8s ease-out ${idx * 0.1}s backwards`,
-                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                  transform: hoveredCard === 300 + idx ? 'translateY(-15px) scale(1.03)' : 'translateY(0) scale(1)',
-                  boxShadow: hoveredCard === 300 + idx 
-                    ? `0 30px 60px ${member.color}30` 
-                    : '0 10px 30px rgba(0,0,0,0.2)'
-                }}>
-
-                {hoveredCard === 300 + idx && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '-50px',
-                    right: '-50px',
-                    width: '150px',
-                    height: '150px',
-                    background: `radial-gradient(circle, ${member.color}30, transparent)`,
-                    borderRadius: '50%',
-                    filter: 'blur(40px)',
-                    animation: 'glowPulse 2s ease-in-out infinite'
-                  }}></div>
-                )}
-
-                <div style={{ position: 'relative', marginBottom: '20px' }}>
-                  <div className="avatar-glow" style={{
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: '50%',
-                    background: `linear-gradient(135deg, ${member.color}40, ${member.color}20)`,
-                    margin: '0 auto',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    border: `2px solid ${member.color}60`,
-                    fontSize: '32px',
-                    position: 'relative',
-                    zIndex: 2,
-                    animation: hoveredCard === 300 + idx ? 'avatarFloat 3s ease-in-out infinite' : 'none',
-                    boxShadow: hoveredCard === 300 + idx ? `0 10px 30px ${member.color}50` : 'none',
-                    transition: 'all 0.4s'
-                  }}>
-                    {member.icon}
-                  </div>
-                </div>
-
-                <h3 style={{ 
-                  fontSize: '17px', 
-                  fontWeight: '700', 
-                  color: hoveredCard === 300 + idx ? member.color : 'white', 
-                  marginBottom: '8px', 
-                  lineHeight: '1.3',
-                  position: 'relative',
-                  zIndex: 2,
-                  transition: 'color 0.3s'
-                }}>
-                  {member.name}
-                </h3>
-                <div style={{ 
-                  fontSize: '13px', 
-                  color: '#FFD700', 
-                  marginBottom: '8px', 
-                  fontWeight: '600',
-                  position: 'relative',
-                  zIndex: 2
-                }}>
-                  {member.role}
-                </div>
-                <div style={{ 
-                  fontSize: '12px', 
-                  color: 'rgba(255,255,255,0.5)', 
-                  lineHeight: '1.5',
-                  position: 'relative',
-                  zIndex: 2
-                }}>
-                  {member.degree}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ✅ CONTACT SECTION */}
       <section className="fade-in-section" style={{ 
         padding: '120px 5%', 
@@ -862,7 +718,7 @@ Reach out to our team of experienced engineers and architects for professional a
             
             <div style={{ display: 'grid', gap: '20px' }}>
               {[
-                { icon: '📞', label: 'PHONE', value: '01958-140774', color: '#4facfe' },
+                { icon: '📞', label: 'PHONE', value: '01958-140774 | 01939-294938', color: '#4facfe' },
                 { icon: '✉️', label: 'EMAIL', value: 'contact@insaflimited.com', color: '#f093fb' }
               ].map((item, idx) => (
                 <div key={idx} className="contact-info-card" style={{ 

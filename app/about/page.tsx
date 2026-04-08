@@ -253,10 +253,54 @@ Today, the firm has successfully delivered hundreds of residential and commercia
 
           <div className="team-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '40px' }}>
             {[
-              { name: 'Ar. Mohammad Insaf', role: 'Principal Architect', exp: '10+ years', specialty: 'Luxury Residential' },
-              { name: 'Eng. Rahman Khan', role: 'Structural Engineer', exp: '12+ years', specialty: 'BNBC Compliance' },
-              { name: 'Ar. Sarah Ahmed', role: 'Senior Architect', exp: '8+ years', specialty: 'Commercial Design' },
-              { name: 'Ar. Nabila Islam', role: 'Interior Designer', exp: '6+ years', specialty: 'Spatial Planning' }
+              { 
+    name: 'Engr. Muhammad Sheik Rakibul Hasan', 
+    role: 'Founder & CEO', 
+    exp: '13+ Years', 
+    specialty: 'Civil Engineering & Leadership' 
+  },
+  { 
+    name: 'Md Harizul Islam', 
+    role: 'Chairman', 
+    exp: '10+ Years', 
+    specialty: 'Consultancy & Strategy' 
+  },
+  { 
+    name: 'Asifur Rahman Fahim', 
+    role: 'General Manager', 
+    exp: '6+ Years', 
+    specialty: 'RAJUK Plan Approval & Management' 
+  },
+  { 
+    name: 'Md Asraf', 
+    role: 'Vice Chairman', 
+    exp: '7+ Years', 
+    specialty: 'Senior Surveyor & Land Mapping' 
+  },
+  { 
+    name: 'Engr. Rakib Hossain', 
+    role: 'Civil Engineer', 
+    exp: '6+ Years', 
+    specialty: 'Structural Design & Engineering' 
+  },
+  { 
+    name: 'Azharul Haq Asif', 
+    role: 'Civil Engineer', 
+    exp: '4+ Years', 
+    specialty: 'Site Supervision & Civil Engineering' 
+  },
+  { 
+    name: 'Md Mahdi Hasan', 
+    role: 'Project Manager', 
+    exp: '5+ Years', 
+    specialty: 'Project Execution & Monitoring' 
+  },
+  { 
+    name: 'Md Talha', 
+    role: 'Marketing Specialist', 
+    exp: '4+ Years', 
+    specialty: 'Brand Management & Communication' 
+  }
             ].map((member, idx) => (
               <div key={idx} className="team-card" style={{
                 background: 'rgba(255,255,255,0.03)',
