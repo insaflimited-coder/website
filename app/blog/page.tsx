@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { blogPosts, getCategories, type Blog, type Category } from './data/blogData'
 
@@ -22,7 +21,6 @@ const ALL_CATEGORIES: (string | 'all')[] = [
 ]
 
 export default function BlogPage() {
-  const searchParams = useSearchParams()
   const [activeCategory, setActiveCategory] = useState<string | 'all'>('all')
   const [activeTag, setActiveTag] = useState<string | null>(null)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
@@ -31,13 +29,16 @@ export default function BlogPage() {
 
   // Check for tag query parameter on mount
   useEffect(() => {
-    const tagParam = searchParams.get('tag')
+    const tagParam = typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('tag')
+      : null
+
     if (tagParam) {
       setActiveTag(decodeURIComponent(tagParam))
       setActiveCategory('all') // Reset category when filtering by tag
     }
     setIsLoaded(true)
-  }, [searchParams])
+  }, [])
 
   // Category পরিবর্তন হলে visible posts রিসেট
   useEffect(() => {
@@ -78,8 +79,7 @@ export default function BlogPage() {
 
   // ✅ Featured post
   const featuredPost = useMemo(() => {
-    const featured = blogPosts.find(post => (post as Blog).isFeatured)
-    return featured || blogPosts[0] || null
+    return blogPosts[0] || null
   }, [])
 
   // আরও posts আছে কিনা চেক
