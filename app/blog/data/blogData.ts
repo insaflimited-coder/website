@@ -10,6 +10,7 @@ export interface Blog {
   readTime: string
   category: string
   gradient: string
+  image: string  
   tags?: string[]
 }
 
@@ -20,7 +21,7 @@ export interface Category {
 }
 
 // Blog Data
-export const blogPosts: Blog[] = [
+export const rawBlogPosts: Omit<Blog, 'image'>[] = [
   {
 
   id: 1,
@@ -17045,6 +17046,11 @@ export const blogPosts: Blog[] = [
 }
 ]
 
+export const blogPosts: Blog[] = rawBlogPosts.map(blog => ({
+  ...blog,
+  image: `/images/blog/${blog.slug}.webp`
+}))
+
 // Helper Functions
 export const getBlogBySlug = (slug: string): Blog | undefined => {
   return blogPosts.find(blog => blog.slug === slug)
@@ -17059,4 +17065,16 @@ export const getRelatedBlogs = (currentBlog: Blog, limit: number = 3): Blog[] =>
   return blogPosts
     .filter(blog => blog.category === currentBlog.category && blog.id !== currentBlog.id)
     .slice(0, limit)
+}
+
+export const getCategories = (): Category[] => {
+  const categoryMap = blogPosts.reduce((acc, blog) => {
+    const category = blog.category
+    if (!acc[category]) {
+      acc[category] = { id: category.toLowerCase().replace(/\s+/g, '-'), name: category, count: 0 }
+    }
+    acc[category].count++
+    return acc
+  }, {} as Record<string, Category>)
+  return Object.values(categoryMap)
 }

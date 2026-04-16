@@ -1,46 +1,16 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { blogPosts } from './data/blogData'
+import { blogPosts, getCategories, type Blog, type Category } from './data/blogData'
 
 // Constants
 const POSTS_PER_PAGE = 6
 
-// ✅ নিজেই Category type define করলাম
-type BlogCategory = 
-  | 'Architecture'
-  | 'Construction'
-  | 'Technology'
-  | 'Real Estate'
-  | 'Legal & Construction'
-  | 'Interior Design'
-  | 'Sustainability'
-
-// ✅ Blog interface define করলাম
-interface Blog {
-  id: number
-  title: string
-  slug: string
-  excerpt: string
-  category: string
-  author: string
-  date: string
-  readTime: string
-  gradient?: string
-  isFeatured?: boolean
-}
-
-// ✅ LocalCategory interface
-interface LocalCategory {
-  id: BlogCategory | 'all'
-  name: string
-  nameEn: string
-  count: number
-}
-
 // All available categories
-const ALL_CATEGORIES: (BlogCategory | 'all')[] = [
+const ALL_CATEGORIES: (string | 'all')[] = [
   'all',
   'Architecture',
   'Construction', 
@@ -52,14 +22,22 @@ const ALL_CATEGORIES: (BlogCategory | 'all')[] = [
 ]
 
 export default function BlogPage() {
-  const [activeCategory, setActiveCategory] = useState<BlogCategory | 'all'>('all')
+  const searchParams = useSearchParams()
+  const [activeCategory, setActiveCategory] = useState<string | 'all'>('all')
+  const [activeTag, setActiveTag] = useState<string | null>(null)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const [visiblePosts, setVisiblePosts] = useState<number>(POSTS_PER_PAGE)
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
 
+  // Check for tag query parameter on mount
   useEffect(() => {
+    const tagParam = searchParams.get('tag')
+    if (tagParam) {
+      setActiveTag(decodeURIComponent(tagParam))
+      setActiveCategory('all') // Reset category when filtering by tag
+    }
     setIsLoaded(true)
-  }, [])
+  }, [searchParams])
 
   // Category পরিবর্তন হলে visible posts রিসেট
   useEffect(() => {
@@ -67,40 +45,31 @@ export default function BlogPage() {
   }, [activeCategory])
 
   // ✅ useMemo দিয়ে categories cache করা
-  const localCategories = useMemo<LocalCategory[]>(() => {
-    const categoryCounts = blogPosts.reduce((acc, post) => {
-      acc[post.category] = (acc[post.category] || 0) + 1
-      return acc
-    }, {} as Record<string, number>)
-
-    const categoryNames: Record<BlogCategory | 'all', string> = {
-      'all': 'সকল',
-      'Architecture': 'আর্কিটেকচার',
-      'Construction': 'কনস্ট্রাকশন',
-      'Technology': 'টেকনোলজি',
-      'Real Estate': 'রিয়েল এস্টেট',
-      'Legal & Construction': 'আইন ও নির্মাণ',
-      'Interior Design': 'ইন্টেরিয়র ডিজাইন',
-      'Sustainability': 'সাসটেইনেবিলিটি'
-    }
-
-    return ALL_CATEGORIES
-      .map(id => ({
-        id,
-        name: categoryNames[id],
-        nameEn: id === 'all' ? 'All' : id,
-        count: id === 'all' ? blogPosts.length : (categoryCounts[id] || 0)
+  const categories = useMemo<Category[]>(() => {
+    const allCategories = getCategories()
+    return [
+      { id: 'all', name: 'সকল', count: blogPosts.length },
+      ...allCategories.map(cat => ({
+        ...cat,
+        name: cat.name // Keep the English name, or translate if needed
       }))
-      .filter(cat => cat.id === 'all' || cat.count > 0)
+    ]
   }, [])
 
   // ✅ useMemo দিয়ে filtered posts cache করা
   const filteredPosts = useMemo(() => {
-    if (activeCategory === 'all') {
-      return blogPosts
+    let posts = blogPosts
+
+    // Filter by tag if active
+    if (activeTag) {
+      posts = posts.filter(post => post.tags && post.tags.some(tag => tag.toLowerCase() === activeTag.toLowerCase()))
+    } else if (activeCategory !== 'all') {
+      // Filter by category if no tag is active
+      posts = posts.filter(post => post.category.toLowerCase() === activeCategory.toLowerCase())
     }
-    return blogPosts.filter(post => post.category === activeCategory)
-  }, [activeCategory])
+
+    return posts
+  }, [activeCategory, activeTag])
 
   // ✅ useMemo দিয়ে displayed posts cache করা
   const displayedPosts = useMemo(() => {
@@ -127,7 +96,7 @@ export default function BlogPage() {
   }, [filteredPosts.length])
 
   // ✅ Category change handler
-  const handleCategoryChange = useCallback((categoryId: BlogCategory | 'all') => {
+  const handleCategoryChange = useCallback((categoryId: string | 'all') => {
     setActiveCategory(categoryId)
     window.scrollTo({ top: 400, behavior: 'smooth' })
   }, [])
@@ -323,14 +292,18 @@ export default function BlogPage() {
                 <div className="featured-visual" style={{
                   width: '100%',
                   height: '280px',
-                  background: featuredPost.gradient || 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
                   borderRadius: '20px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '70px'
+                  overflow: 'hidden',
+                  position: 'relative'
                 }}>
-                  📰
+                  <Image
+                    src={featuredPost.image}
+                    alt={featuredPost.title}
+                    fill
+                    style={{
+                      objectFit: 'cover'
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -341,25 +314,70 @@ export default function BlogPage() {
       {/* CATEGORY FILTERS */}
       <section className="fade-in-section" style={{ padding: '40px 5%', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          {/* Active Tag Filter */}
+          {activeTag && (
+            <div style={{
+              marginBottom: '20px',
+              padding: '15px',
+              backgroundColor: 'rgba(255,215,0,0.1)',
+              border: '1px solid rgba(255,215,0,0.2)',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '15px'
+            }}>
+              <div style={{
+                fontSize: '14px',
+                color: 'rgba(255,255,255,0.7)'
+              }}>
+                Filtering by tag: <span style={{ color: '#FFD700', fontWeight: '600' }}>#{activeTag}</span>
+              </div>
+              <button
+                onClick={() => {
+                  setActiveTag(null)
+                  setActiveCategory('all')
+                  window.history.pushState({}, '', '/blog')
+                }}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: '20px',
+                  color: '#FFD700',
+                  cursor: 'pointer',
+                  fontSize: '12px',
+                  fontWeight: '600'
+                }}
+              >
+                Clear Filter ✕
+              </button>
+            </div>
+          )}
+          
           <div className="filter-buttons" style={{ 
             display: 'flex', 
             gap: '12px', 
             flexWrap: 'wrap', 
             justifyContent: 'center' 
           }}>
-            {localCategories.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={String(cat.id)}
-                onClick={() => handleCategoryChange(cat.id)}
+                onClick={() => {
+                  handleCategoryChange(cat.id)
+                  setActiveTag(null)
+                }}
                 className="category-btn"
                 style={{
                   padding: '10px 22px',
-                  background: activeCategory === cat.id 
+                  background: (activeCategory === cat.id && !activeTag)
                     ? 'linear-gradient(135deg, #FFD700, #FFA500)' 
                     : 'rgba(255,255,255,0.05)',
-                  border: activeCategory === cat.id ? 'none' : '1px solid rgba(255,255,255,0.1)',
+                  border: (activeCategory === cat.id && !activeTag) ? 'none' : '1px solid rgba(255,255,255,0.1)',
                   borderRadius: '30px',
-                  color: activeCategory === cat.id ? '#0A0A0A' : 'rgba(255,255,255,0.7)',
+                  color: (activeCategory === cat.id && !activeTag) ? '#0A0A0A' : 'rgba(255,255,255,0.7)',
                   fontWeight: '600',
                   fontSize: '13px',
                   cursor: 'pointer',
@@ -372,10 +390,10 @@ export default function BlogPage() {
                 {cat.name}
                 <span style={{
                   padding: '2px 8px',
-                  backgroundColor: activeCategory === cat.id ? 'rgba(0,0,0,0.2)' : 'rgba(255,215,0,0.2)',
+                  backgroundColor: (activeCategory === cat.id && !activeTag) ? 'rgba(0,0,0,0.2)' : 'rgba(255,215,0,0.2)',
                   borderRadius: '15px',
                   fontSize: '11px',
-                  color: activeCategory === cat.id ? '#0A0A0A' : '#FFD700'
+                  color: (activeCategory === cat.id && !activeTag) ? '#0A0A0A' : '#FFD700'
                 }}>
                   {cat.count}
                 </span>
@@ -397,9 +415,13 @@ export default function BlogPage() {
             fontSize: '14px'
           }}>
             দেখাচ্ছে <span style={{ color: '#FFD700', fontWeight: '600' }}>{displayedPosts.length}</span> / <span style={{ color: '#FFD700', fontWeight: '600' }}>{filteredPosts.length}</span> টি আর্টিকেল
-            {activeCategory !== 'all' && (
+            {activeTag ? (
               <span style={{ marginLeft: '10px' }}>
-                ({localCategories.find(c => c.id === activeCategory)?.name})
+                (ট্যাগ: #{activeTag})
+              </span>
+            ) : activeCategory !== 'all' && (
+              <span style={{ marginLeft: '10px' }}>
+                ({categories.find(c => c.id === activeCategory)?.name})
               </span>
             )}
           </div>
@@ -425,9 +447,18 @@ export default function BlogPage() {
                 {/* Image */}
                 <div className="card-image" style={{
                   height: '180px',
-                  background: post.gradient,
-                  position: 'relative'
+                  position: 'relative',
+                  overflow: 'hidden',
+                  borderRadius: '20px 20px 0 0'
                 }}>
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    style={{
+                      objectFit: 'cover'
+                    }}
+                  />
                   <div style={{
                     position: 'absolute',
                     top: '12px',
@@ -476,6 +507,30 @@ export default function BlogPage() {
                   }}>
                     {post.excerpt}
                   </p>
+
+                  {/* Tags */}
+                  {post.tags && post.tags.length > 0 && (
+                    <div style={{
+                      display: 'flex',
+                      gap: '8px',
+                      flexWrap: 'wrap',
+                      marginBottom: '15px'
+                    }}>
+                      {post.tags.slice(0, 3).map((tag: string) => (
+                        <span key={tag} style={{
+                          padding: '4px 10px',
+                          backgroundColor: 'rgba(255,215,0,0.1)',
+                          border: '1px solid rgba(255,215,0,0.2)',
+                          borderRadius: '15px',
+                          color: '#FFD700',
+                          fontSize: '11px',
+                          fontWeight: '500'
+                        }}>
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
                   <div style={{
                     display: 'flex',

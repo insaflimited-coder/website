@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getBlogBySlug, getRelatedBlogs, type Blog } from '../data/blogData'
+import TagLink from '../components/TagLink'
 import type { Metadata } from 'next'
 
 interface PageProps {
@@ -213,36 +215,25 @@ export default async function BlogPost({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Featured Image / Gradient Banner */}
+        {/* Featured Image */}
         <div style={{
           width: '100%',
           height: 'clamp(200px, 30vw, 400px)',
           borderRadius: '20px',
-          background: blog.gradient,
           marginBottom: '50px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
           overflow: 'hidden'
         }}>
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'rgba(0,0,0,0.2)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <span style={{
-              fontSize: 'clamp(40px, 8vw, 80px)',
-              fontWeight: '900',
-              color: 'rgba(255,255,255,0.15)',
-              letterSpacing: '-2px'
-            }}>
-              #{blog.id}
-            </span>
-          </div>
+          <Image
+            src={blog.image}
+            alt={blog.title}
+            width={800}
+            height={400}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+          />
         </div>
 
         {/* Table of Contents hint */}
@@ -301,17 +292,9 @@ export default async function BlogPost({ params }: PageProps) {
             </div>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               {blog.tags.map((tag: string) => (
-                <span key={tag} style={{
-                  padding: '6px 14px',
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '20px',
-                  color: 'rgba(255,255,255,0.6)',
-                  fontSize: '13px',
-                  transition: 'all 0.3s ease'
-                }}>
-                  #{tag}
-                </span>
+                <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} prefetch={false} style={{ textDecoration: 'none' }}>
+                  <TagLink tag={tag} />
+                </Link>
               ))}
             </div>
           </div>
@@ -527,13 +510,25 @@ export default async function BlogPost({ params }: PageProps) {
                   }}>
                     <div style={{
                       height: '160px',
-                      background: relatedBlog.gradient,
                       position: 'relative',
-                      display: 'flex',
-                      alignItems: 'flex-end',
-                      padding: '15px'
+                      overflow: 'hidden',
+                      borderRadius: '20px 20px 0 0'
                     }}>
+                      <Image
+                        src={relatedBlog.image}
+                        alt={relatedBlog.title}
+                        width={280}
+                        height={160}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover'
+                        }}
+                      />
                       <span style={{
+                        position: 'absolute',
+                        bottom: '15px',
+                        left: '15px',
                         padding: '4px 12px',
                         backgroundColor: 'rgba(0,0,0,0.5)',
                         backdropFilter: 'blur(10px)',
