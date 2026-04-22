@@ -795,6 +795,37 @@ const projects: Project[] = [
     ? projects 
     : projects.filter(p => p.category === activeFilter)
 
+    const buildAboutSteps = (desc: string) => {
+  const sentences = desc
+    .split(/(?<!\b[A-Z][a-z])\. /)
+    .map(s => s.trim())
+    .filter(Boolean)
+    .slice(0, 8)
+
+  return sentences.map((s) => {
+    const parts = s.split(':')
+    if (parts.length >= 2) {
+      const title = parts[0].trim()
+      const body = parts.slice(1).join(':').trim()
+
+      const lower = title.toLowerCase()
+      const icon =
+        lower.includes('client') ? '👤' :
+        lower.includes('working area') || lower.includes('area') ? '📐' :
+        lower.includes('floor') || lower.includes('ground') ? '🏗️' :
+        '✨'
+
+      const normalizedIcon =
+        lower.includes('ground') ? '🏠' :
+        icon
+
+      return { title, body, icon: normalizedIcon }
+    }
+
+    return { title: 'Detail', body: s, icon: '✨' }
+  })
+}
+
   if (isLoading) {
     return (
       <div style={{
@@ -1434,7 +1465,7 @@ const projects: Project[] = [
                 letterSpacing: '-3px',
                 lineHeight: '1'
               }}>
-                25+
+                15+
               </div>
               <div style={{
                 fontSize: '13px',
@@ -1770,12 +1801,73 @@ const projects: Project[] = [
               </div>
 
               <div style={{ marginBottom: '30px' }}>
-                <h3 style={{ color: '#FFD700', fontSize: '16px', marginBottom: '12px', fontWeight: '800' }}>
-                  ABOUT THIS PROJECT
-                </h3>
-                <p style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.8', fontSize: '15px' }}>
-                  {selectedProject.description}
-                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+                  <span style={{ fontSize: '20px' }}>📋</span>
+                  <h3 style={{ color: '#FFD700', fontSize: '16px', fontWeight: '800', margin: 0 }}>
+                    ABOUT THIS PROJECT
+                  </h3>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {selectedProject &&
+                    buildAboutSteps(selectedProject.description).map((step, i) => (
+                      <div
+                        key={i}
+                        className="about-step-item"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '16px',
+                          padding: '18px 20px',
+                          backgroundColor: i === 0 ? 'rgba(255,215,0,0.08)' : 'rgba(255,255,255,0.03)',
+                          border: i === 0 ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(255,255,255,0.1)',
+                          borderRadius: '16px',
+                          transition: 'all 0.3s ease',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 44,
+                            height: 44,
+                            borderRadius: '50%',
+                            background: i === 0 
+                              ? 'linear-gradient(135deg, #FFD700, #FFA500)' 
+                              : 'linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1))',
+                            border: i === 0 ? '2px solid #FFD700' : '1px solid rgba(255,215,0,0.3)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            fontSize: 20,
+                            boxShadow: i === 0 ? '0 0 15px rgba(255,215,0,0.4)' : 'none'
+                          }}
+                        >
+                          {step.icon}
+                        </div>
+
+                        <div style={{ flex: 1 }}>
+                          <div style={{ 
+                            color: i === 0 ? '#FFD700' : 'white', 
+                            fontWeight: 700, 
+                            fontSize: 14, 
+                            marginBottom: 6,
+                            textShadow: i === 0 ? '0 0 10px rgba(255,215,0,0.3)' : 'none'
+                          }}>
+                            {step.title}
+                          </div>
+                          <p style={{ 
+                            color: 'rgba(255,255,255,0.65)', 
+                            lineHeight: 1.6, 
+                            fontSize: 13, 
+                            margin: 0 
+                          }}>
+                            {step.body}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
               </div>
 
               <div style={{
@@ -1879,6 +1971,12 @@ const projects: Project[] = [
         }
 
         .project-card:hover img { transform: scale(1.1) !important; }
+
+        .about-step-item:hover {
+          transform: translateX(8px);
+          background: rgba(255,215,0,0.12) !important;
+          border-color: rgba(255,215,0,0.4) !important;
+        }
 
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0A0A0A; }

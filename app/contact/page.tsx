@@ -895,6 +895,10 @@ Get in touch with our team of architects and engineers for a free consultation. 
           
           .hero-badge {
             margin: 0 auto 20px !important;
+            max-width: 100% !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
           }
           
           .hero-heading {
@@ -923,6 +927,11 @@ Get in touch with our team of architects and engineers for a free consultation. 
           .contact-grid {
             grid-template-columns: 1fr !important;
             gap: 40px !important;
+            padding: 0 16px !important;
+          }
+          
+          .form-section {
+            padding: 25px !important;
           }
           
           .form-heading {
@@ -942,6 +951,43 @@ Get in touch with our team of architects and engineers for a free consultation. 
             padding: 30px 20px !important;
           }
           
+          .info-card {
+            padding: 25px 18px !important;
+            margin-bottom: 20px !important;
+            width: 100% !important;
+          }
+          
+          .contact-item {
+            gap: 16px !important;
+            padding: 16px !important;
+            margin-bottom: 16px !important;
+            width: 100% !important;
+          }
+          
+          .contact-item > div:first-child {
+            width: 48px !important;
+            height: 48px !important;
+            flex-shrink: 0;
+            min-width: 48px !important;
+          }
+          
+          .contact-item > div:last-child {
+            word-break: break-word;
+            overflow-wrap: break-word;
+          }
+          
+          .contact-item div:last-child {
+            font-size: 14px !important;
+          }
+          
+          .contact-item h4 {
+            font-size: 16px !important;
+          }
+          
+          .info-section > div:last-child {
+            padding: 20px 18px !important;
+          }
+          
           .final-cta {
             padding: 0 10px !important;
           }
@@ -953,6 +999,7 @@ Get in touch with our team of architects and engineers for a free consultation. 
           .cta-buttons-final {
             flex-direction: column !important;
             align-items: center !important;
+            width: 100% !important;
           }
           
           .cta-buttons-final a {
@@ -968,6 +1015,27 @@ Get in touch with our team of architects and engineers for a free consultation. 
           .cta-ring {
             display: none;
           }
+
+          /* Touch-friendly targets */
+          .btn-whatsapp,
+          .btn-call,
+          .btn-glow,
+          .btn-submit {
+            min-height: 48px !important;
+          }
+
+          /* Disable complex hover effects on touch */
+          @media (hover: none) and (pointer: coarse) {
+            .feature-card:hover,
+            .contact-item:hover,
+            .social-btn:hover,
+            .btn-whatsapp:hover,
+            .btn-call:hover,
+            .btn-glow:hover,
+            .btn-submit:not(:disabled):hover {
+              transform: none !important;
+            }
+          }
         }
 
         @media (max-width: 480px) {
@@ -981,6 +1049,19 @@ Get in touch with our team of architects and engineers for a free consultation. 
           
           .cta-heading {
             font-size: 28px !important;
+          }
+
+          /* Prevent horizontal overflow */
+          * {
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+
+          /* Ensure text doesn't overflow */
+          h1, h2, h3, h4, p, span, div, input, textarea, select {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            hyphens: auto !important;
           }
         }
       `}</style>

@@ -106,7 +106,7 @@ export default function About() {
                 {[
                   { num: '530+', label: 'PROJECTS', delay: '0.6s' },
                   { num: '8+', label: 'YEARS', delay: '0.8s' },
-                  { num: '25+', label: 'TEAM', delay: '1s' }
+                  { num: '15+', label: 'TEAM', delay: '1s' }
                 ].map((stat, idx) => (
                   <div key={idx} className="stat-item" style={{
                     opacity: isLoaded ? 1 : 0,
@@ -187,7 +187,7 @@ Today, the firm has successfully delivered hundreds of residential and commercia
               </p>
               <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.6)', lineHeight: '1.8', marginBottom: '25px' }}>
                 What started as a two-person operation has grown into a full-service architectural firm 
-                with 25+ professionals, including licensed architects, structural engineers, and interior designers.
+                with 15+ professionals, including licensed architects, structural engineers, and interior designers.
               </p>
               <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.6)', lineHeight: '1.8' }}>
                 Today, we've successfully completed 530+ projects, maintaining a 100% RAJUK approval success 
@@ -247,7 +247,7 @@ Today, the firm has successfully delivered hundreds of residential and commercia
           <div style={{ textAlign: 'center', marginBottom: '80px' }}>
             <div className="section-label" style={{ color: '#FFD700', fontSize: '14px', letterSpacing: '3px', marginBottom: '20px' }}>THE TEAM</div>
             <h2 className="section-heading" style={{ fontSize: '56px', fontWeight: '900', color: 'white', letterSpacing: '-1px' }}>
-              MEET THE <span style={{ color: '#FFD700' }}>EXPERTS</span>
+              MEET THE <span style={{ color: '#FFD700' }}>MANAGEMENT</span>
             </h2>
           </div>
 
@@ -265,17 +265,18 @@ Today, the firm has successfully delivered hundreds of residential and commercia
     exp: '10+ Years', 
     specialty: 'Consultancy & Strategy' 
   },
-  { 
-    name: 'Asifur Rahman Fahim', 
-    role: 'General Manager', 
-    exp: '6+ Years', 
-    specialty: 'RAJUK Plan Approval & Management' 
-  },
+  
   { 
     name: 'Md Asraf', 
     role: 'Vice Chairman', 
     exp: '7+ Years', 
     specialty: 'Senior Surveyor & Land Mapping' 
+  },
+  { 
+    name: 'Asifur Rahman Fahim', 
+    role: 'General Manager', 
+    exp: '6+ Years', 
+    specialty: 'RAJUK Plan Approval & Management' 
   },
   { 
     name: 'Engr. Rakib Hossain', 

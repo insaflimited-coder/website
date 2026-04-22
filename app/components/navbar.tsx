@@ -8,9 +8,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [logoError, setLogoError] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
   const pathname = usePathname()
 
-  // Scroll detection
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
@@ -19,12 +19,11 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close menu on route change
   useEffect(() => {
     setMenuOpen(false)
+    setServicesOpen(false)
   }, [pathname])
 
-  // Body scroll lock for mobile menu
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden'
@@ -39,7 +38,14 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
+    { 
+      name: 'Services', 
+      href: '/services',
+      dropdown: [
+        { name: '🏠 Floor Plan Only', href: '/floor-plan' },
+        { name: '💰 Service Prices', href: '/service-prices' },
+      ]
+    },
     { name: 'Experts', href: '/experts' },
     { name: 'Portfolio', href: '/portfolio' },
     { name: 'Blog', href: '/blog' },
@@ -58,9 +64,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             
-            {/* ✅ Logo with Glow Effect */}
+            {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group relative">
-              {/* Glow Effect */}
               <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
               
               {!logoError ? (
@@ -78,21 +83,15 @@ export default function Navbar() {
                     onError={() => setLogoError(true)}
                     priority
                   />
-                  {/* Rotating Ring */}
                   <div className="absolute inset-0 rounded-lg border-2 border-yellow-400/30 opacity-0 group-hover:opacity-100 transition-all duration-500"
-                    style={{
-                      animation: 'spin 3s linear infinite'
-                    }}></div>
+                    style={{ animation: 'spin 3s linear infinite' }}></div>
                 </div>
               ) : (
                 <div className="relative">
                   <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
-                    style={{
-                      boxShadow: '0 10px 30px rgba(255,215,0,0.4)'
-                    }}>
+                    style={{ boxShadow: '0 10px 30px rgba(255,215,0,0.4)' }}>
                     I
                   </div>
-                  {/* Pulse Effect */}
                   <div className="absolute inset-0 bg-yellow-400/30 rounded-lg animate-pulse"></div>
                 </div>
               )}
@@ -106,50 +105,138 @@ export default function Navbar() {
                     LIMITED
                   </span>
                 </div>
-                {/* Underline Effect */}
                 <div className="h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-full"></div>
               </div>
             </Link>
 
-            {/* ✅ Desktop Menu with Enhanced Hover */}
+            {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-8">
               {navLinks.map((link, index) => (
-                <Link 
-                  key={link.href}
-                  href={link.href} 
-                  className="relative group"
-                  style={{
-                    animation: `fadeInDown 0.6s ease-out ${index * 0.1}s backwards`
-                  }}
-                >
-                  <span className={`text-sm font-medium transition-all duration-300 ${
-                    pathname === link.href 
-                      ? 'text-black' 
-                      : 'text-gray-600 group-hover:text-black'
-                  }`}>
-                    {link.name}
-                  </span>
+                <div key={link.href} className="relative group">
                   
-                  {/* Active Indicator */}
-                  {pathname === link.href && (
-                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"
+                  {/* Normal link OR dropdown trigger */}
+                  {link.dropdown ? (
+                    <button
+                      onClick={() => setServicesOpen(!servicesOpen)}
+                      className="relative flex items-center gap-1"
                       style={{
-                        animation: 'slideIn 0.4s ease-out'
+                        animation: `fadeInDown 0.6s ease-out ${index * 0.1}s backwards`
                       }}
-                    />
+                    >
+                      <span className={`text-sm font-medium transition-all duration-300 ${
+                        pathname === link.href || pathname.startsWith('/floor-plan') || pathname.startsWith('/service-prices')
+                          ? 'text-black' 
+                          : 'text-gray-600 group-hover:text-black'
+                      }`}>
+                        {link.name}
+                      </span>
+                      
+                      {/* Arrow Icon */}
+                      <svg 
+                        className={`w-3 h-3 text-gray-500 transition-transform duration-300 ${servicesOpen ? 'rotate-180' : ''}`}
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+
+                      {/* Active Indicator */}
+                      {(pathname === link.href || pathname.startsWith('/floor-plan') || pathname.startsWith('/service-prices')) && (
+                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"
+                          style={{ animation: 'slideIn 0.4s ease-out' }}
+                        />
+                      )}
+                    </button>
+                  ) : (
+                    <Link 
+                      href={link.href} 
+                      className="relative group"
+                      style={{
+                        animation: `fadeInDown 0.6s ease-out ${index * 0.1}s backwards`
+                      }}
+                    >
+                      <span className={`text-sm font-medium transition-all duration-300 ${
+                        pathname === link.href 
+                          ? 'text-black' 
+                          : 'text-gray-600 group-hover:text-black'
+                      }`}>
+                        {link.name}
+                      </span>
+                      
+                      {pathname === link.href && (
+                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"
+                          style={{ animation: 'slideIn 0.4s ease-out' }}
+                        />
+                      )}
+                      
+                      <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-300 rounded-full transition-all duration-300 ${
+                        pathname !== link.href ? 'group-hover:w-full' : ''
+                      }`} />
+                    </Link>
                   )}
-                  
-                  {/* Hover Underline */}
-                  <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-300 rounded-full transition-all duration-300 ${
-                    pathname !== link.href ? 'group-hover:w-full' : ''
-                  }`} />
-                  
-                  {/* Glow on Hover */}
-                  <span className="absolute inset-0 -z-10 bg-gradient-to-r from-yellow-400/10 to-yellow-600/10 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-all duration-300 scale-0 group-hover:scale-150"></span>
-                </Link>
+
+                  {/* Dropdown Menu */}
+                  {link.dropdown && servicesOpen && (
+                    <div 
+                      className="absolute top-full left-0 mt-3 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50"
+                      style={{
+                        animation: 'dropdownOpen 0.3s ease-out',
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,215,0,0.1)'
+                      }}
+                    >
+                      {/* Dropdown Header */}
+                      <div className="px-4 py-3 bg-gradient-to-r from-yellow-50 to-yellow-100/50 border-b border-yellow-100">
+                        <p className="text-xs font-700 text-yellow-600 tracking-wider uppercase">Our Services</p>
+                      </div>
+
+                      {/* Main Services Link */}
+                      <Link
+                        href="/services"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-all duration-200 group border-b border-gray-50"
+                        onClick={() => setServicesOpen(false)}
+                      >
+                        <span className="text-lg">📋</span>
+                        <div>
+                          <p className={`text-sm font-600 transition-colors duration-200 ${
+                            pathname === '/services' ? 'text-yellow-600' : 'text-gray-700 group-hover:text-black'
+                          }`}>
+                            All Services
+                          </p>
+                          <p className="text-xs text-gray-400">View all packages</p>
+                        </div>
+                        {pathname === '/services' && (
+                          <span className="ml-auto text-yellow-500 text-xs">●</span>
+                        )}
+                      </Link>
+
+                      {/* Dropdown Items */}
+                      {link.dropdown.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-all duration-200 group border-b border-gray-50 last:border-0"
+                          onClick={() => setServicesOpen(false)}
+                        >
+                          <span className="text-lg">{item.name.split(' ')[0]}</span>
+                          <div>
+                            <p className={`text-sm font-600 transition-colors duration-200 ${
+                              pathname === item.href ? 'text-yellow-600' : 'text-gray-700 group-hover:text-black'
+                            }`}>
+                              {item.name.substring(item.name.indexOf(' ') + 1)}
+                            </p>
+                          </div>
+                          {pathname === item.href && (
+                            <span className="ml-auto text-yellow-500 text-xs">●</span>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
               
-              {/* ✅ CTA Button with Shine Effect */}
+              {/* CTA Button */}
               <Link 
                 href="/contact" 
                 className="relative bg-gradient-to-r from-black to-gray-800 text-white px-6 py-2.5 rounded-full text-sm font-medium overflow-hidden group"
@@ -158,27 +245,22 @@ export default function Navbar() {
                   boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
                 }}
               >
-                {/* Shine Effect */}
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                
                 <span className="relative z-10 flex items-center gap-2">
                   Get Started
                   <span className="transform transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </span>
-                
-                {/* Glow on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
               </Link>
             </div>
 
-            {/* ✅ Mobile Menu Button with Animation */}
+            {/* Mobile Menu Button */}
             <button 
               className="lg:hidden p-2 text-black hover:bg-gray-100 rounded-lg transition-all duration-300 relative group"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
               aria-expanded={menuOpen}
             >
-              {/* Ripple Effect */}
               <div className="absolute inset-0 bg-yellow-400/20 rounded-lg scale-0 group-active:scale-100 transition-transform duration-300"></div>
               
               <svg 
@@ -197,14 +279,20 @@ export default function Navbar() {
             </button>
           </div>
         </div>
+
+        {/* Click Outside to Close Dropdown */}
+        {servicesOpen && (
+          <div 
+            className="fixed inset-0 z-40" 
+            onClick={() => setServicesOpen(false)}
+          />
+        )}
       </nav>
 
-      {/* ✅ Mobile Menu Overlay with Backdrop Blur */}
+      {/* Mobile Menu */}
       <div 
         className={`fixed inset-0 z-40 lg:hidden transition-all duration-500 ${
-          menuOpen 
-            ? 'opacity-100 visible' 
-            : 'opacity-0 invisible'
+          menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         style={{
           background: 'rgba(0, 0, 0, 0.6)',
@@ -212,59 +300,81 @@ export default function Navbar() {
         }}
         onClick={() => setMenuOpen(false)}
       >
-        {/* ✅ Mobile Menu Content with Slide Animation */}
         <div 
           className={`absolute right-0 top-0 h-full w-80 bg-white shadow-2xl transition-all duration-500 ${
             menuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           onClick={(e) => e.stopPropagation()}
-          style={{
-            borderLeft: '2px solid rgba(255,215,0,0.2)'
-          }}
+          style={{ borderLeft: '2px solid rgba(255,215,0,0.2)' }}
         >
-          <div className="flex flex-col h-full pt-24 px-6 pb-6">
+          <div className="flex flex-col h-full pt-24 px-6 pb-6 overflow-y-auto">
             
-            {/* ✅ Mobile Menu Links with Stagger Animation */}
             <div className="flex flex-col space-y-1 flex-1">
               {navLinks.map((link, index) => (
-                <Link 
-                  key={link.href}
-                  href={link.href} 
-                  className={`relative py-4 px-4 text-lg font-medium rounded-xl transition-all duration-300 group ${
-                    pathname === link.href
-                      ? 'bg-gradient-to-r from-yellow-50 to-yellow-100/50 text-black'
-                      : 'text-gray-700 hover:bg-gray-50'
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                  style={{
-                    opacity: menuOpen ? 1 : 0,
-                    transform: menuOpen ? 'translateX(0)' : 'translateX(20px)',
-                    transition: `all 0.5s ease-out ${menuOpen ? index * 0.1 : 0}s`
-                  }}
-                >
-                  {/* Active Border */}
-                  {pathname === link.href && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-yellow-400 to-yellow-600 rounded-r-full"
-                      style={{
-                        animation: 'slideInLeft 0.4s ease-out'
-                      }}
-                    ></div>
-                  )}
-                  
-                  <span className="relative z-10 flex items-center justify-between">
-                    {link.name}
+                <div key={link.href}>
+                  {/* Main Link */}
+                  <Link 
+                    href={link.href} 
+                    className={`relative py-4 px-4 text-lg font-medium rounded-xl transition-all duration-300 group flex items-center justify-between ${
+                      pathname === link.href
+                        ? 'bg-gradient-to-r from-yellow-50 to-yellow-100/50 text-black'
+                        : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                    onClick={() => !link.dropdown && setMenuOpen(false)}
+                    style={{
+                      opacity: menuOpen ? 1 : 0,
+                      transform: menuOpen ? 'translateX(0)' : 'translateX(20px)',
+                      transition: `all 0.5s ease-out ${menuOpen ? index * 0.1 : 0}s`
+                    }}
+                  >
                     {pathname === link.href && (
-                      <span className="text-yellow-500 text-xl">✦</span>
+                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-yellow-400 to-yellow-600 rounded-r-full"
+                        style={{ animation: 'slideInLeft 0.4s ease-out' }}
+                      ></div>
                     )}
-                  </span>
-                  
-                  {/* Hover Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/5 to-yellow-600/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Link>
+                    
+                    <span className="relative z-10">{link.name}</span>
+                    
+                    {link.dropdown && (
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </Link>
+
+                  {/* Mobile Dropdown Items */}
+                  {link.dropdown && (
+                    <div className="ml-4 mt-1 flex flex-col gap-1">
+                      {link.dropdown.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          className={`py-3 px-4 text-sm font-medium rounded-xl transition-all duration-300 flex items-center gap-2 ${
+                            pathname === item.href
+                              ? 'bg-yellow-50 text-yellow-600'
+                              : 'text-gray-600 hover:bg-gray-50 hover:text-black'
+                          }`}
+                          onClick={() => setMenuOpen(false)}
+                          style={{
+                            opacity: menuOpen ? 1 : 0,
+                            transform: menuOpen ? 'translateX(0)' : 'translateX(20px)',
+                            transition: `all 0.5s ease-out ${menuOpen ? (index + idx + 1) * 0.08 : 0}s`
+                          }}
+                        >
+                          <span>{item.name.split(' ')[0]}</span>
+                          <span>{item.name.substring(item.name.indexOf(' ') + 1)}</span>
+                          {pathname === item.href && (
+                            <span className="ml-auto text-yellow-500">●</span>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
             
-            {/* ✅ Mobile CTA Button with Gradient */}
+            {/* Mobile CTA */}
             <Link 
               href="/contact" 
               className="relative bg-gradient-to-r from-black via-gray-800 to-black text-white px-6 py-4 rounded-full text-center font-medium shadow-lg overflow-hidden group"
@@ -272,29 +382,23 @@ export default function Navbar() {
               style={{
                 opacity: menuOpen ? 1 : 0,
                 transform: menuOpen ? 'translateY(0)' : 'translateY(20px)',
-                transition: 'all 0.6s ease-out 0.6s',
-                backgroundSize: '200% 100%',
-                animation: menuOpen ? 'gradientMove 3s ease infinite' : 'none'
+                transition: 'all 0.6s ease-out 0.6s'
               }}
             >
-              {/* Shine Effect */}
               <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-active:translate-x-full transition-transform duration-500"></div>
-              
               <span className="relative z-10 flex items-center justify-center gap-2">
                 Get Started
                 <span className="transform transition-transform duration-300 group-hover:translate-x-1">→</span>
               </span>
             </Link>
 
-            {/* ✅ Mobile Menu Footer */}
+            {/* Mobile Footer */}
             <div className="mt-6 pt-6 border-t border-gray-200"
               style={{
                 opacity: menuOpen ? 1 : 0,
                 transition: 'opacity 0.8s ease-out 0.8s'
               }}>
-              <p className="text-sm text-gray-500 text-center">
-                © 2024 INSAF LIMITED
-              </p>
+              <p className="text-sm text-gray-500 text-center">© 2024 INSAF LIMITED</p>
               <div className="flex justify-center gap-4 mt-3">
                 {['F', 'I', 'L', 'Y'].map((social, idx) => (
                   <div key={idx} className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs text-gray-500 hover:bg-yellow-50 hover:text-yellow-600 transition-all duration-300 cursor-pointer"
@@ -310,72 +414,40 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* ✅ CSS Animations */}
+      {/* CSS Animations */}
       <style jsx global>{`
         @keyframes fadeInDown {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes slideIn {
-          from {
-            width: 0;
-            opacity: 0;
-          }
-          to {
-            width: 100%;
-            opacity: 1;
-          }
+          from { width: 0; opacity: 0; }
+          to { width: 100%; opacity: 1; }
         }
-
         @keyframes slideInLeft {
-          from {
-            height: 0;
-            opacity: 0;
-          }
-          to {
-            height: 2rem;
-            opacity: 1;
-          }
+          from { height: 0; opacity: 0; }
+          to { height: 2rem; opacity: 1; }
         }
-
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: scale(0.8);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
+          from { opacity: 0; transform: scale(0.8); }
+          to { opacity: 1; transform: scale(1); }
         }
-
         @keyframes gradientMove {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
-
         @keyframes spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
-
-        /* Smooth scroll behavior */
-        html {
-          scroll-behavior: smooth;
+        @keyframes dropdownOpen {
+          from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Remove tap highlight on mobile */
-        * {
-          -webkit-tap-highlight-color: transparent;
-        }
+        html { scroll-behavior: smooth; }
+        * { -webkit-tap-highlight-color: transparent; }
       `}</style>
     </>
   )

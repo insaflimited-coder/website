@@ -7,26 +7,7 @@ export default function ServicePricesPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   const packages = [
-    {
-      id: 1,
-      title: 'Floor Plan (Choose Plan) Only',
-      subtitle: 'Basic Layout Design',
-      icon: '📐',
-      description: 'Professional 2D floor plan design for your building',
-      price: 'Starting from ৳5,000',
-      priceNote: 'One-time payment',
-      features: [
-        '2D Floor Plan with accurate measurements',
-        'Room layout and furniture placement',
-        'Dimensions and annotations',
-        'Print-ready PDF format',
-        'Up to 3 revisions included',
-        '3-5 days delivery'
-      ],
-      popular: false,
-      gradient: 'linear-gradient(135deg, rgba(102,126,234,0.15), rgba(118,75,162,0.08))',
-      color: '#667eea'
-    },
+    
     {
       id: 2,
       title: 'Duplex/Triplex Design',
@@ -35,15 +16,6 @@ export default function ServicePricesPage() {
       description: 'Complete architectural solution for 2-3 storied homes',
       price: '৳25-30 per sqft',
       priceNote: 'Based on built-up area',
-      features: [
-        'Complete architectural design package',
-        'Structural engineering & calculations',
-        'Electrical & lighting layout',
-        'Plumbing & sanitary design',
-        'High-quality 3D exterior renders',      
-        'Unlimited design revisions',
-        'Construction-ready documents'
-      ],
       popular: true,
       gradient: 'linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.08))',
       color: '#FFD700'
@@ -56,15 +28,6 @@ export default function ServicePricesPage() {
       description: 'Professional design for small to medium buildings',
       price: '৳20-25 per sqft',
       priceNote: 'Competitive rates',
-      features: [
-        'Full architectural planning',
-        'Structural design & load calculations',
-        'MEP (Mechanical, Electrical, Plumbing)',
-        'Realistic 3D visualization',        
-        'Construction phase guidance',
-        'Detailed material specifications',
-        'Cost estimation support'
-      ],
       popular: false,
       gradient: 'linear-gradient(135deg, rgba(79,172,254,0.15), rgba(0,242,254,0.08))',
       color: '#4facfe'
@@ -77,14 +40,6 @@ export default function ServicePricesPage() {
       description: 'Advanced design for multi-family buildings',
       price: '৳15-20 per sqft',
       priceNote: 'Volume discount available',
-      features: [
-        'Complete design package',
-        'Advanced structural engineering',        
-        'Elevator & staircase design',
-        '3D interior & exterior renders',        
-        'Construction Consultancy',
-        'Value engineering services'
-      ],
       popular: false,
       gradient: 'linear-gradient(135deg, rgba(240,147,251,0.15), rgba(245,87,108,0.08))',
       color: '#f093fb'
@@ -97,14 +52,6 @@ export default function ServicePricesPage() {
       description: 'Premium design for commercial & residential towers',
       price: '৳12-15 per sqft',
       priceNote: 'Project-based pricing',
-      features: [
-        'Premium architectural design',
-        'Foundation & pile design',
-        'Complete MEP engineering services',
-        'Fire safety & NOC documentation',
-        'Parking layout & management plan',               
-        'BIM (Building Information Modeling)'
-      ],
       popular: false,
       gradient: 'linear-gradient(135deg, rgba(67,233,123,0.15), rgba(56,249,215,0.08))',
       color: '#43e97b'
@@ -117,15 +64,6 @@ export default function ServicePricesPage() {
       description: 'Enterprise-level design for tall buildings',
       price: '৳11-14 per sqft',
       priceNote: 'Custom solutions',
-      features: [
-        'Enterprise design solution',
-        'Earthquake-resistant design (BNBC)',
-        'High-rise MEP systems',
-        'Advanced fire safety systems',
-        'Lift, generator & substation',        
-        'Generator & substation design', 
-        'Sustainability features (LEED ready)'
-      ],
       popular: false,
       gradient: 'linear-gradient(135deg, rgba(250,112,154,0.15), rgba(254,225,64,0.08))',
       color: '#fa709a'
@@ -138,18 +76,6 @@ export default function ServicePricesPage() {
       description: 'Turnkey solution for landmark buildings',
       price: 'Custom Quote Required',
       priceNote: 'Contact for consultation',
-      features: [
-        'Full turnkey design solution',
-        'Advanced structural engineering',
-        'Complete building systems integration',
-        'Fire & life safety compliance',
-        'MEP & HVAC design',        
-        'Precision Engineering & Analysis',
-        'Smart Space Optimization',
-        'Sustainability & Green Building Design',
-        'Cost-Efficient Design Solutions',
-        'Comprehensive Construction Support',
-      ],
       popular: false,
       gradient: 'linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,142,83,0.08))',
       color: '#ff6b6b'
@@ -466,7 +392,6 @@ export default function ServicePricesPage() {
             {packages.map((pkg, idx) => (
               <div 
                 key={pkg.id}
-                onClick={() => setActivePackage(activePackage === pkg.id ? null : pkg.id)}
                 style={{
                   background: pkg.gradient,
                   border: pkg.popular ? `2px solid ${pkg.color}` : `1px solid ${pkg.color}40`,
@@ -474,24 +399,17 @@ export default function ServicePricesPage() {
                   cursor: 'pointer',
                   position: 'relative',
                   transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                  boxShadow: activePackage === pkg.id 
-                    ? `0 30px 80px ${pkg.color}40` 
-                    : '0 4px 20px rgba(0,0,0,0.3)',
-                  transform: activePackage === pkg.id ? 'translateY(-15px)' : 'translateY(0)',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
                   overflow: 'hidden',
                   animation: `cardReveal 0.8s ease-out ${idx * 0.1}s backwards`
                 }}
                 onMouseEnter={(e) => {
-                  if (activePackage !== pkg.id) {
-                    e.currentTarget.style.transform = 'translateY(-10px)'
-                    e.currentTarget.style.boxShadow = `0 25px 60px ${pkg.color}30`
-                  }
+                  e.currentTarget.style.transform = 'translateY(-10px)'
+                  e.currentTarget.style.boxShadow = `0 25px 60px ${pkg.color}30`
                 }}
                 onMouseLeave={(e) => {
-                  if (activePackage !== pkg.id) {
-                    e.currentTarget.style.transform = 'translateY(0)'
-                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)'
-                  }
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)'
                 }}
               >
                 {/* Popular Badge */}
@@ -576,77 +494,36 @@ export default function ServicePricesPage() {
                     </div>
                   </div>
 
-                  {/* Features */}
-                  <div style={{ 
-                    maxHeight: activePackage === pkg.id ? '700px' : '0',
-                    overflow: 'hidden',
-                    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                    opacity: activePackage === pkg.id ? 1 : 0
-                  }}>
-                    <div style={{ 
-                      paddingTop: '25px', 
-                      paddingBottom: '20px',
-                      borderTop: `2px solid ${pkg.color}30`
+                  {/* Contact Button */}
+                  <Link href="/contact" style={{ textDecoration: 'none' }}>
+                    <button style={{
+                      width: '100%',
+                      padding: '18px',
+                      background: `linear-gradient(135deg, ${pkg.color}, ${pkg.color}cc)`,
+                      border: 'none',
+                      borderRadius: '14px',
+                      color: '#0A0A0A',
+                      fontWeight: '800',
+                      fontSize: '15px',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '10px',
+                      boxShadow: `0 10px 30px ${pkg.color}40`
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.03)'
+                      e.currentTarget.style.boxShadow = `0 15px 40px ${pkg.color}60`
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)'
+                      e.currentTarget.style.boxShadow = `0 10px 30px ${pkg.color}40`
                     }}>
-                      <div style={{ 
-                        fontSize: '12px', 
-                        fontWeight: '800', 
-                        color: 'rgba(255,255,255,0.5)', 
-                        marginBottom: '20px',
-                        letterSpacing: '2px',
-                        textTransform: 'uppercase'
-                      }}>
-                        What's Included
-                      </div>
-                      {pkg.features.map((feature, idx) => (
-                        <div key={idx} style={{ 
-                          display: 'flex', 
-                          alignItems: 'flex-start', 
-                          gap: '14px',
-                          marginBottom: '16px',
-                          fontSize: '15px',
-                          lineHeight: '1.5'
-                        }}>
-                          <span style={{ 
-                            color: pkg.color, 
-                            fontSize: '18px',
-                            fontWeight: '700',
-                            flexShrink: 0
-                          }}>✓</span>
-                          <span style={{ color: 'rgba(255,255,255,0.8)' }}>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* CTA Button */}
-                  <button style={{
-                    width: '100%',
-                    padding: '18px',
-                    background: activePackage === pkg.id 
-                      ? `linear-gradient(135deg, ${pkg.color}, ${pkg.color}cc)` 
-                      : 'rgba(255,255,255,0.05)',
-                    border: activePackage === pkg.id ? 'none' : `1px solid ${pkg.color}40`,
-                    borderRadius: '14px',
-                    color: activePackage === pkg.id ? '#0A0A0A' : 'white',
-                    fontWeight: '700',
-                    fontSize: '15px',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px'
-                  }}>
-                    <span>{activePackage === pkg.id ? 'Hide Details' : 'View Details'}</span>
-                    <span style={{ 
-                      transition: 'transform 0.3s ease',
-                      transform: activePackage === pkg.id ? 'rotate(180deg)' : 'rotate(0)',
-                      fontSize: '18px'
-                    }}>
-                      ↓
-                    </span>
-                  </button>
+                      <span>GET A QUOTE →</span>
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -938,7 +815,6 @@ export default function ServicePricesPage() {
         padding: '80px 5%',
         zIndex: 1
       }}>
-        {/* Animated Rings */}
         {[700, 600, 500].map((size, idx) => (
           <div key={idx} style={{
             position: 'absolute',
@@ -961,10 +837,7 @@ export default function ServicePricesPage() {
           maxWidth: '900px',
           margin: '0 auto'
         }}>
-          <div style={{ 
-            marginBottom: '30px',
-            animation: 'fadeInDown 0.8s ease-out'
-          }}>
+          <div style={{ marginBottom: '30px', animation: 'fadeInDown 0.8s ease-out' }}>
             <span style={{
               padding: '10px 25px',
               backgroundColor: 'rgba(255,215,0,0.1)',
@@ -1006,8 +879,7 @@ export default function ServicePricesPage() {
             animation: 'fadeInUp 1.2s ease-out 0.4s backwards'
           }}>
             Over 530 successful projects completed with precision and care. Our expert team provides architectural design, structural planning, and RAJUK approval support tailored to your needs.
-
-Schedule your free consultation today.
+            Schedule your free consultation today.
           </p>
 
           <div style={{ 
@@ -1097,116 +969,154 @@ Schedule your free consultation today.
         </div>
       </section>
 
-      {/* All Animations - Copied from Homepage */}
+      {/* All Animations */}
       <style jsx>{`
         @keyframes floatOrb {
           0%, 100% { transform: translate(0, 0) scale(1); }
           33% { transform: translate(60px, -60px) scale(1.1); }
           66% { transform: translate(-60px, 60px) scale(0.9); }
         }
-
         @keyframes pulseDot {
           0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,215,0,0.7); }
           50% { transform: scale(1.3); box-shadow: 0 0 0 15px rgba(255,215,0,0); }
         }
-
         @keyframes badgeGlow {
           0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.2); }
           50% { box-shadow: 0 0 40px rgba(255,215,0,0.5), 0 0 60px rgba(255,215,0,0.3); }
         }
-
         @keyframes gradientShift {
           0% { background-position: 0% center; }
           50% { background-position: 100% center; }
           100% { background-position: 0% center; }
         }
-
         @keyframes fadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
         }
-
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(50px); }
           to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fadeInDown {
           from { opacity: 0; transform: translateY(-30px); }
           to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes statPop {
           0% { opacity: 0; transform: scale(0.3); }
           50% { transform: scale(1.15); }
           100% { opacity: 1; transform: scale(1); }
         }
-
         @keyframes btnShine {
           0% { left: -100%; }
           20%, 100% { left: 100%; }
         }
-
         @keyframes borderPulse {
           0%, 100% { border-color: rgba(255,255,255,0.2); }
           50% { border-color: rgba(255,215,0,0.4); }
         }
-
         @keyframes numberGlow {
           0%, 100% { text-shadow: 0 0 20px currentColor; transform: scale(1); }
           50% { text-shadow: 0 0 40px currentColor, 0 0 60px currentColor; transform: scale(1.05); }
         }
-
         @keyframes cardReveal {
           from { opacity: 0; transform: translateY(60px) scale(0.95); }
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
-
         @keyframes iconFloat {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-10px); }
         }
-
         @keyframes textGlow {
           0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.3); }
           50% { text-shadow: 0 0 25px rgba(255,255,255,0.5); }
         }
-
         @keyframes pulseGlow {
           0%, 100% { box-shadow: 0 0 15px rgba(255,215,0,0.3); }
           50% { box-shadow: 0 0 30px rgba(255,215,0,0.6); }
         }
-
         @keyframes ringsPulse {
           0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
           50% { opacity: 0.4; }
           100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
         }
-
         @keyframes pulse {
           0%, 100% { transform: scale(1); }
           50% { transform: scale(1.05); }
         }
-
         @keyframes buttonGlow {
           0%, 100% { box-shadow: 0 30px 60px rgba(255,215,0,0.4); }
           50% { box-shadow: 0 35px 70px rgba(255,215,0,0.6); }
         }
-
         @keyframes starTwinkle {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.5; transform: scale(0.8); }
         }
 
-        /* Responsive */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-          h1 { font-size: 48px !important; }
+          h1 { font-size: 42px !important; line-height: 1.15 !important; }
           h2 { font-size: 32px !important; }
+          section { padding: 60px 20px !important; }
+
+          /* Hero buttons stack */
+          div[style*="justifyContent: 'center'"] {
+            flex-direction: column !important;
+            align-items: center !important;
+          }
+
+          /* Stats row */
+          div[style*="gap: '50px'"] {
+            gap: 25px !important;
+          }
+
+          /* Package cards 1 column */
+          div[style*="minmax(min(100%, 380px)"] {
+            grid-template-columns: 1fr !important;
+          }
+
+          /* Additional services 1 column */
+          div[style*="minmax(min(100%, 320px)"] {
+            grid-template-columns: 1fr !important;
+          }
+
+          /* FAQ padding fix */
+          p[style*="padding: '0 35px 30px 75px'"] {
+            padding: 0 20px 25px 20px !important;
+          }
+
+          /* CTA rings hide */
+          div[style*="ringsPulse"] {
+            display: none !important;
+          }
+
+          /* CTA buttons stack */
+          div[style*="gap: '20px'"][style*="justifyContent: 'center'"] {
+            flex-direction: column !important;
+            align-items: center !important;
+          }
+
+          div[style*="justifyContent: 'center'"] a,
+          div[style*="justifyContent: 'center'"] button {
+            width: 100% !important;
+            max-width: 320px !important;
+            justify-content: center !important;
+          }
         }
 
         @media (max-width: 480px) {
-          h1 { font-size: 36px !important; }
-          h2 { font-size: 28px !important; }
+          h1 { font-size: 32px !important; }
+          h2 { font-size: 26px !important; }
+          section { padding: 50px 15px !important; }
+        }
+
+        html, body {
+          overflow-x: hidden !important;
+          max-width: 100vw !important;
+        }
+
+        h1, h2, h3, h4, p, span {
+          word-wrap: break-word !important;
+          overflow-wrap: break-word !important;
         }
       `}</style>
     </div>

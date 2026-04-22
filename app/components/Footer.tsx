@@ -518,148 +518,6 @@ export default function Footer() {
               </button>
             </div>
           </div>
-          
-          {/* ✅ Newsletter with Enhanced Form */}
-          <div style={{ animation: 'fadeInUp 0.8s ease-out 0.5s backwards' }}>
-            <h4 style={{ 
-              color: '#FFD700', 
-              marginBottom: '30px', 
-              fontSize: '14px',
-              fontWeight: '700',
-              letterSpacing: '2px',
-              position: 'relative',
-              display: 'inline-block'
-            }}>
-              NEWSLETTER
-              <span style={{
-                position: 'absolute',
-                bottom: '-8px',
-                left: 0,
-                width: '40px',
-                height: '3px',
-                background: 'linear-gradient(90deg, #FFD700, transparent)',
-                borderRadius: '3px'
-              }} />
-            </h4>
-            <p style={{ 
-              color: 'rgba(255,255,255,0.6)', 
-              fontSize: '13px',
-              marginBottom: '20px',
-              lineHeight: '1.7'
-            }}>
-              Subscribe to get updates on our latest projects and design trends.
-            </p>
-            
-            <form onSubmit={handleSubscribe} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="newsletter-input"
-                  style={{
-                    width: '100%',
-                    padding: '15px 18px',
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,215,0,0.2)',
-                    borderRadius: '12px',
-                    color: 'white',
-                    fontSize: '14px',
-                    outline: 'none',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = '#FFD700'
-                    e.currentTarget.style.backgroundColor = 'rgba(255,215,0,0.08)'
-                    e.currentTarget.style.boxShadow = '0 0 20px rgba(255,215,0,0.2)'
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255,215,0,0.2)'
-                    e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'
-                    e.currentTarget.style.boxShadow = 'none'
-                  }}
-                />
-                
-                {/* Input Glow */}
-                <div style={{
-                  position: 'absolute',
-                  inset: '-2px',
-                  borderRadius: '14px',
-                  background: 'linear-gradient(135deg, rgba(255,215,0,0.3), transparent)',
-                  opacity: 0,
-                  pointerEvents: 'none',
-                  transition: 'opacity 0.3s ease'
-                }} className="input-glow" />
-              </div>
-              
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="subscribe-btn"
-                style={{
-                  padding: '15px 25px',
-                  background: submitSuccess 
-                    ? 'linear-gradient(135deg, #43e97b, #38f9d7)' 
-                    : 'linear-gradient(135deg, #FFD700, #FFA500)',
-                  border: 'none',
-                  borderRadius: '12px',
-                  color: '#0A0A0A',
-                  fontWeight: '700',
-                  fontSize: '13px',
-                  letterSpacing: '1px',
-                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.4s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  boxShadow: '0 8px 25px rgba(255,215,0,0.3)',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}
-                onMouseEnter={(e) => {
-                  if (!isSubmitting) {
-                    e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)'
-                    e.currentTarget.style.boxShadow = '0 12px 35px rgba(255,215,0,0.4)'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
-                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(255,215,0,0.3)'
-                }}
-              >
-                {/* Shine Effect */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: '-100%',
-                  width: '100%',
-                  height: '100%',
-                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-                  animation: 'btnShine 3s ease-in-out infinite'
-                }} />
-                
-                <span style={{ position: 'relative', zIndex: 1 }}>
-                  {isSubmitting ? '⏳ SUBSCRIBING...' : submitSuccess ? '✓ SUBSCRIBED!' : 'SUBSCRIBE →'}
-                </span>
-              </button>
-            </form>
-
-            {/* Stats */}
-            <div style={{
-              marginTop: '25px',
-              padding: '15px',
-              background: 'rgba(255,215,0,0.05)',
-              borderRadius: '12px',
-              border: '1px solid rgba(255,215,0,0.1)',
-              textAlign: 'center'
-            }}>
-              <div style={{ fontSize: '24px', fontWeight: '900', color: '#FFD700' }}>2,500+</div>
-              <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', letterSpacing: '1px' }}>SUBSCRIBERS</div>
-            </div>
-          </div>
         </div>
         
         {/* ✅ Bottom Bar with Enhanced Design */}
@@ -853,6 +711,8 @@ export default function Footer() {
         @media (max-width: 768px) {
           footer > div > div:first-child {
             gap: 40px !important;
+            grid-template-columns: 1fr !important;
+            padding: 30px 5% 40px !important;
           }
           
           .back-to-top {
@@ -860,6 +720,127 @@ export default function Footer() {
             right: 20px !important;
             width: 45px !important;
             height: 45px !important;
+          }
+
+          .footer-main {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+          }
+
+          .company-info,
+          .quick-links,
+          .services,
+          .contact-info {
+            text-align: left !important;
+          }
+
+          .contact-link,
+          .location-info {
+            justify-content: flex-start !important;
+            text-align: left !important;
+          }
+
+          .social-links {
+            justify-content: flex-start !important;
+          }
+
+          .footer-bottom {
+            flex-direction: column !important;
+            gap: 20px !important;
+            text-align: center !important;
+          }
+
+          .footer-bottom-left,
+          .footer-bottom-right {
+            justify-content: center !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          footer > div > div:first-child {
+            padding: 20px 5% 30px !important;
+          }
+
+          .company-logo h3 {
+            font-size: 28px !important;
+          }
+
+          .company-subtitle {
+            font-size: 10px !important;
+          }
+
+          .footer-links h4 {
+            font-size: 13px !important;
+          }
+
+          .footer-link {
+            font-size: 13px !important;
+          }
+
+          .contact-link {
+            padding: 10px 12px !important;
+            font-size: 13px !important;
+          }
+
+          .contact-link .icon {
+            width: 30px !important;
+            height: 30px !important;
+            font-size: 16px !important;
+          }
+
+          .contact-link .title {
+            font-size: 10px !important;
+          }
+
+          .contact-link .content {
+            font-size: 13px !important;
+          }
+
+          .location-info {
+            padding: 10px 12px !important;
+          }
+
+          .location-info .icon {
+            width: 30px !important;
+            height: 30px !important;
+            font-size: 16px !important;
+          }
+
+          .social-link {
+            width: 40px !important;
+            height: 40px !important;
+            font-size: 18px !important;
+          }
+
+          .directions-btn {
+            padding: 12px 20px !important;
+            font-size: 12px !important;
+          }
+
+          .footer-bottom p {
+            font-size: 12px !important;
+          }
+
+          .footer-bottom .links {
+            gap: 20px !important;
+          }
+
+          .footer-bottom .links a {
+            font-size: 12px !important;
+          }
+
+          .back-to-top {
+            width: 40px !important;
+            height: 40px !important;
+            font-size: 18px !important;
+          }
+
+          /* Touch-friendly targets */
+          .social-link,
+          .directions-btn,
+          .back-to-top {
+            min-width: 44px !important;
+            min-height: 44px !important;
           }
         }
       `}</style>

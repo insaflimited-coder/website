@@ -173,5 +173,5 @@ export const stats = {
   projects: '530+',
   years: '12+',
   success: '100%',
-  team: '25+',
+  team: '15+',
 }
