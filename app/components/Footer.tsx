@@ -41,8 +41,7 @@ export default function Footer() {
   ]
 
   const socialLinks = [
-    { name: 'Facebook', icon: '📘', href: 'https://facebook.com/insaflimited', color: '#1877F2' },
-    { name: 'Instagram', icon: '📸', href: 'https://instagram.com/insaflimited', color: '#E4405F' },
+    { name: 'Facebook', icon: '📘', href: 'https://www.facebook.com/ibdcbd', color: '#1877F2' },    
     { name: 'LinkedIn', icon: '💼', href: 'https://linkedin.com/company/insaflimited', color: '#0A66C2' },
     { name: 'WhatsApp', icon: '💬', href: 'https://wa.me/8801958140774', color: '#25D366' },
   ]

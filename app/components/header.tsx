@@ -32,6 +32,7 @@ export default function Header() {
     { name: 'PORTFOLIO', href: '/portfolio' },
     { name: 'BLOG', href: '/blog' },
     { name: 'PRICES', href: '/prices' },
+    { name: 'FLOOR-PLAN', href: '/floor-plan' },
   ]
 
   const orbPositions = [
